@@ -1,0 +1,4 @@
+API side:
+1. Windows Server 2008 R2
+2. python 3.4.3, Django 1.8.2
+3. other: notepad++, pip
