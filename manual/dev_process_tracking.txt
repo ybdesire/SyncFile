@@ -1,0 +1,6 @@
+## API
+
+### 1. login process
+* http & https
+* register
+* oAuth(http://url/v1/getAuthID?op=login&fmt=json&username=email@address&password=password)
