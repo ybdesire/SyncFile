@@ -1,0 +1,38 @@
+v1 API
+Register process
+
+
+1. 2 class for model(DB)
+
+	Class UserInfo
+		userName
+		password
+		email
+
+	Class UserFolder
+		userName
+		userDir
+
+2. API
+	http://url/v1/register?op=login&fmt=json&username=email@address&password=password
+
+3. Response
+if( (usename not in DB) && (email not in DB) && (password) )
+then 
+{regist_status:'ok', error_code:0, msg:'registered a new user.'}
+
+else if(usename in DB)
+then
+{regist_status:'error', error_code:1001, msg:'the user has been registered, please change the user name.'}
+
+else if(email in DB)
+then
+{regist_status:'error', error_code:1002, msg:'the email has been registered, please change the email.'}
+
+---
+restriction: 
+1. do not set/check complication password for v1. 
+2. do not i18n the msg.
+
+
+But should support Unicode user name
