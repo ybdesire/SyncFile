@@ -2,20 +2,16 @@ v1 API
 Register process
 
 
-1. 2 class for model(DB)
+1. model(DB) class for registration
 
 	Class UserInfo
 		userName
 		password
 		email
 
-	Class UserFolder
-		userName
-		userDir
-
 2. API
-	http://url/v1/register?op=login&fmt=json&username=email@address&password=password
-
+	http://localhost:8000/v1/userRegister?op=register&fmt=json&username=user&password=password&email=user@email.com
+	
 3. Response
 if( (usename not in DB) && (email not in DB) && (password) )
 then 
