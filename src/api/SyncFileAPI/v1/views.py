@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth.hashers import make_password, check_password, is_password_usable
+
 from .models import UserInfo
 # Create your views here.
 
@@ -23,7 +25,8 @@ def userRegister(request):
 		#	print(u.password)
 		if not ( UserInfo.objects.filter(userName = req_user_name) or UserInfo.objects.filter(email=req_email)):
 			print('user added')
-			q = UserInfo(userName=req_user_name, password=req_password, email=req_email)
+			print('passwd: {0}'.format(make_password(req_password)))
+			q = UserInfo(userName=req_user_name, password=make_password(req_password), email=req_email)
 			q.save()
 		else:
 			print('user already registed')
