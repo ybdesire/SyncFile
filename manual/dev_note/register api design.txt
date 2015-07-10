@@ -15,16 +15,19 @@ Register process
 3. Response
 if( (usename not in DB) && (email not in DB) && (password) )
 then 
-{regist_status:'ok', error_code:0, msg:'registered a new user.'}
+{register_status:'ok', error_code:1000, msg:'registered a new user.'}
 
 else if(usename in DB)
 then
-{regist_status:'error', error_code:1001, msg:'the user has been registered, please change the user name.'}
+{register_status:'error', error_code:1001, msg:'the user has been registered, please change the user name.'}
 
 else if(email in DB)
 then
-{regist_status:'error', error_code:1002, msg:'the email has been registered, please change the email.'}
+{register_status:'error', error_code:1002, msg:'the email has been registered, please change the email.'}
 
+else if(input blank)
+then
+createJsonResponseForUserRegister('error', 1003, 'blank username/password/email')
 ---
 restriction: 
 1. do not set/check complication password for v1. 
