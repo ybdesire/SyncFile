@@ -1,0 +1,11 @@
+ERROR: Django - DatabaseError: No such table
+SOLUTION:
+manage.py makemigrations polls
+manage.py sql polls
+manage.py syncdb
+
+--------------------------------------------------------------------
+ERROR: database is locked
+SOLUTION:
+SQLite is lightweight, so it cannot support concurrency
+Close DB browser, like 'SQLite Browser'
