@@ -9,18 +9,17 @@ from .models import UserInfo
 def index(request):
 	return HttpResponse('index')
 	
-
 def isStrEmpty(str):
-	if str and str.strip():
+	if str and str.strip():# if string empty or blank
 		return False
 	else:
 		return True
 
-def createJsonResponseForUserRegister(register_status, error_code, msg):
+def createJsonResponseForUserRegister(register_status, error_code, msg):#error code = 100x
 	json_response = {}
-	json_response["register_status"]=register_status		
-	json_response["error_code"]=error_code
-	json_response["msg"]=msg
+	json_response['register_status']=register_status		
+	json_response['error_code']=error_code
+	json_response['msg']=msg
 	return json_response
 
 def userRegister(request):
@@ -43,5 +42,5 @@ def userRegister(request):
 	else:
 		response_data = createJsonResponseForUserRegister('error', 1003, 'blank username/password/email')
 	
-	return HttpResponse(json.dumps(response_data), content_type="application/json")
+	return HttpResponse(json.dumps(response_data), content_type='application/json')
 	
