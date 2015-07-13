@@ -1,0 +1,8 @@
+1. run server at local
+SyncFile\src\api\SyncFileAPI>manage.py runserver
+
+2. start test at another cmd
+SyncFile\src\api\SyncFileAPI>manage.py test
+
+3. stop server & clean database
+SyncFile\src\api\SyncFileAPI>git checkout db.sqlite3
