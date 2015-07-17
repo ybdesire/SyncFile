@@ -18,4 +18,4 @@ then
 {authid:'xxooxoxooxxoxo', error_code:1010, msg:'auth id get ok'}
 (if authid null, generate new one; if authid not null, and lastAuthTime not exceed 18h, return the exists authid & update lastAuthTime; if authid not null, and lastAuthTime exceed 18h, update authid & lastAuthTime )
 else
-{authid:'', error_code:1011, msg:'user is not registed or user name/password in correct'}
+{authid:'', error_code:1011, msg:'auth failure. user is not registed or user name/password incorrect'}

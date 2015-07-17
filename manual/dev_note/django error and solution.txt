@@ -1,7 +1,7 @@
 ERROR: Django - DatabaseError: No such table
 SOLUTION:
-manage.py makemigrations polls
-manage.py sql polls
+manage.py makemigrations appname
+manage.py sql appname
 manage.py syncdb
 
 --------------------------------------------------------------------

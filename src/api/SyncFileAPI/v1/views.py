@@ -16,4 +16,4 @@ def userRegister(request):
 
 def getAuthID(request):
 	response_data = api_get_authid.API_GetAuthID(request)
-	return HttpResponse(response_data)
+	return HttpResponse(json.dumps(response_data), content_type='application/json')

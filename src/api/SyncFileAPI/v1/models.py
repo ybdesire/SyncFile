@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 class UserInfo(models.Model):
@@ -13,3 +14,8 @@ class UserInfo(models.Model):
 		return self.email
 	def getPasswd(self):
 		return self.password
+		
+class UserToken(models.Model):
+	userName = models.CharField(max_length=200)
+	authID = models.CharField(max_length=200)
+	authTime = models.TimeField(blank=True)
