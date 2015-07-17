@@ -15,7 +15,7 @@ class UserInfo(models.Model):
 	def getPasswd(self):
 		return self.password
 		
-class UserToken(models.Model):
+class UserAuthID(models.Model):
 	userName = models.CharField(max_length=200)
-	authID = models.CharField(max_length=200)
+	authID = models.CharField(max_length=50)
 	authTime = models.TimeField(blank=True)
