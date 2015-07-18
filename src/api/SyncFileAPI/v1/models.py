@@ -18,4 +18,4 @@ class UserInfo(models.Model):
 class UserAuthID(models.Model):
 	userName = models.CharField(max_length=200)
 	authID = models.CharField(max_length=50)
-	authTime = models.TimeField(blank=True)
+	authTime = models.DateTimeField(blank=True)
