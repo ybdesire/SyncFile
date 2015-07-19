@@ -42,13 +42,6 @@ def API_GetAuthID(request):
 					ua.authTime = current_time
 					ua.save()
 					response_data = createJsonResponseForGetAuthID(guid, '1010', 'auth success')
-			else:#Create authTime & authID
-				guid = str(uuid.uuid1())
-				current_time = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
-				ua = UserAuthID.objects.filter(userName = req_user_name)[0]
-				ua.authID = guid
-				ua.authTime = current_time
-				response_data = createJsonResponseForGetAuthID(guid, '1010', 'auth success')
 		else:
 			response_data = createJsonResponseForGetAuthID('', '1011', 'auth failure. user is not registed or user name/password incorrect')
 	else:
