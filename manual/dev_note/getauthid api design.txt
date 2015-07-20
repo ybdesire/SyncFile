@@ -1,15 +1,15 @@
 v1 API
 
-http://localhost:8000/v1/getAuthID?fmt=json&username=email@address&password=password
+http://localhost:8000/v1/getAuthID?fmt=json&username=user1&password=password
 
-1. model(DB) class for registration. Should modify class userInfo.
+1. model(DB) class for get auth id
 
-	Class UserInfo
-		userName
-		password
-		email
-		authid
-		lastAuthTime
+class UserAuthID(models.Model):
+	userName = models.CharField(max_length=200)
+	authID = models.CharField(max_length=50)
+	authTime = models.DateTimeField(blank=True)
+
+authID is GUID.
 
 2. logic
 
