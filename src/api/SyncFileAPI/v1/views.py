@@ -19,4 +19,5 @@ def getAuthID(request):
 	return HttpResponse(json.dumps(response_data), content_type='application/json')
 	
 def isAuthAlive(request):
-	return HttpResponse('isAuthAlive')
+	response_data = api_is_auth_alive.API_isAuthAlive(request)
+	return HttpResponse(json.dumps(response_data), content_type='application/json')
