@@ -26,14 +26,14 @@ def API_GetAuthID(request):
 				guid = str(uuid.uuid1())
 				ua = UserAuthID(userName=req_user_name, authID=guid, authTime=datetime.datetime.utcnow())
 				ua.save()
-				response_data = createJsonResponseForGetAuthID(guid, '1010', 'auth success')
+				response_data = createJsonResponseForGetAuthID(guid, 1010, 'auth success')
 			elif(UserAuthID.objects.filter(userName = req_user_name)[0].authID):#if authID exceed 20h, update authTime & authID. else return the exists authID
 				past_time = UserAuthID.objects.filter(userName = req_user_name)[0].authTime
 				current_time = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
 				delta_seconds = (current_time-past_time).total_seconds()
 				if( delta_seconds>0 and delta_seconds<20*60*60):#authID not exceed 20h, return the exist authID
 					guid = UserAuthID.objects.filter(userName = req_user_name)[0].authID
-					response_data = createJsonResponseForGetAuthID(guid, '1010', 'auth success')
+					response_data = createJsonResponseForGetAuthID(guid, 1010, 'auth success')
 				else:
 					guid = str(uuid.uuid1())
 					current_time = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
@@ -41,9 +41,9 @@ def API_GetAuthID(request):
 					ua.authID = guid
 					ua.authTime = current_time
 					ua.save()
-					response_data = createJsonResponseForGetAuthID(guid, '1010', 'auth success')
+					response_data = createJsonResponseForGetAuthID(guid, 1010, 'auth success')
 		else:
-			response_data = createJsonResponseForGetAuthID('', '1011', 'auth failure. user is not registed or user name/password incorrect')
+			response_data = createJsonResponseForGetAuthID('', 1011, 'auth failure. user is not registed or user name/password incorrect')
 	else:
-		response_data = createJsonResponseForGetAuthID('', '1011', 'auth failure. user is not registed or user name/password incorrect')
+		response_data = createJsonResponseForGetAuthID('', 1011, 'auth failure. user is not registed or user name/password incorrect')
 	return response_data

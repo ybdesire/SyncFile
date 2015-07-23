@@ -24,3 +24,14 @@ class TestAPIv1(unittest.TestCase):
 		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username= &password=password&email=user@email.com')
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1003)
+		
+	def test_API_getAuthID_1011(self):
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=xxxx&password=password')#unknown username or password
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1011)
+	
+	def test_API_getAuthID_1010(self):
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=user1&password=123')#exist username & password
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1010)
+	
