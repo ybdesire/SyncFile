@@ -2,13 +2,10 @@
 {
 id:guid
 parentid:guid
-displayname:file/folder name or sth others
-type: file or folder
-canupload: true or false
-candownload: true or false
+type:
 size:
-creationdate:
-creatorname:
-filename
-foldername
+createdate:
+creator:
+filename:
+foldername:
 }
