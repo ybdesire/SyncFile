@@ -1,11 +1,12 @@
 v1 API
 
 1. File name should support Unicode
-2. Support register by api with email auth.(dynamic url creation & validate)
-3. Is HTTPS ok for this version?
+2. Support register by api with email auth.(dynamic url creation & validate)[C]
+3. Is HTTPS ok for this version?[C]
   * NO. HTTPS should be supported by web server and certification. HTTPS support can be directly implemented by future deployment.
 4. How to debug Django project?
-5. Test automation script shoud be in progress with development.
+5. Test automation script shoud be in progress with development.[C]
+  *in progress
 
 
 v2 API

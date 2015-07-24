@@ -1,0 +1,21 @@
+1. list
+list the folder/files under a folder.
+API: 	op=list&id=root&authid=xxxxxxx
+Return:	folder/file structure array
+
+2. create
+create folder under a folder.
+API: 	op=create&authid=xxxx&id=xxxx&path=xxxx&name=xxxx
+Return:	true or false
+
+3. delete
+delete all files & folders under a folder.
+API:	op=delete&&authid=xxxx&id=xxxx or path=xxxx
+Return:	true or false
+
+4. rename
+rename a folder.
+API:	op=rename&&authid=xxxx&id=xxxx or path=xxxx, &name=xxxx
+Return:	true or false
+
+optional: remove, copy, send

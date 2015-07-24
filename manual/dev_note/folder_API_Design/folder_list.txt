@@ -1,0 +1,9 @@
+API
+
+https://url/v1/folder.aspx?op=list&id=root&authid=xxxxxxx
+
+
+
+
+
+
