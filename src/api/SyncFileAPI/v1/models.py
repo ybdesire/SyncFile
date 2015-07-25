@@ -19,3 +19,13 @@ class UserAuthID(models.Model):
 	userName = models.CharField(max_length=200)
 	authID = models.CharField(max_length=50)
 	authTime = models.DateTimeField(blank=True)
+	
+class FileSys(models.Model):
+	id = models.CharField(max_length=50, primary_key=True)
+	parentid = models.CharField(max_length=50)
+	type = models.CharField(max_length=20)
+	size = models.CharField(max_length=20)
+	createdate = models.DateTimeField(blank=True)
+	creator = models.CharField(max_length=200)
+	filename = models.CharField(max_length=200)
+	foldername = models.CharField(max_length=200)
