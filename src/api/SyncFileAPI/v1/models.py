@@ -29,3 +29,4 @@ class FileSys(models.Model):
 	creator = models.CharField(max_length=200)
 	filename = models.CharField(max_length=200)
 	foldername = models.CharField(max_length=200)
+	path = models.CharField(max_length=2000, blank=True)
