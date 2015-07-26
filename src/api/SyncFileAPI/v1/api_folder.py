@@ -1,3 +1,6 @@
 
 def API_folder(request):
-	return 'folder v1'
+	req_op = request.GET.get('op', '')
+	
+	
+	return req_op
