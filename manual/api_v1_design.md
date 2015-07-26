@@ -31,3 +31,4 @@ v1 API is for http/https API. RestAPI should be implemented in future version(v2
 * v1 API support only SQLite
 * v1 API support only json response
 * v1 API do not care much about security
+* v1 API data/time is UTC time

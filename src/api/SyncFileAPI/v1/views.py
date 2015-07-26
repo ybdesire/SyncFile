@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import make_password, check_password, is_passwo
 from . import api_user_register
 from . import api_get_authid
 from . import api_is_auth_alive
+from . import api_folder
 # Create your views here.
 
 def index(request):
@@ -21,3 +22,7 @@ def getAuthID(request):
 def isAuthAlive(request):
 	response_data = api_is_auth_alive.API_isAuthAlive(request)
 	return HttpResponse(json.dumps(response_data), content_type='application/json')
+	
+def folder(request):
+	response_data = api_folder.API_folder(request)
+	return HttpResponse(response_data)
