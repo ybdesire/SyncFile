@@ -8,6 +8,7 @@ Return:	folder/file structure array
 2. mkdir
 create folder under a folder.
 API: 	op=mkdir&authid=xxxx& id=xxxx/path=xxxx
+		path format: 'book\code', not 'book\code\'
 Return:	true or false
 
 3. rm

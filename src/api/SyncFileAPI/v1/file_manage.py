@@ -36,7 +36,11 @@ class fileManage:
 			return True, ''
 		except Exception as e:
 			return False, e		
-		
+	
+	def is_exists(self, path):
+		full_path = '{0}{1}'.format(self.base_dir, path)
+		return os.path.exists(full_path)
+	
 def main():
 	mgr = fileManage()
 	stat = mgr.delete_folder(r'user1\kkk')
