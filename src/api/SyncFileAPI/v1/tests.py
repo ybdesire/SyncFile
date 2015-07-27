@@ -35,3 +35,14 @@ class TestAPIv1(unittest.TestCase):
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1010)
 	
+	def test_API_isAuthAlive_1021(self):
+		req = requests.get('http://localhost:8000/v1/isAuthAlive?authid=xxxxx')#non-exist authid
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1021)
+
+	def test_API_isAuthAlive_1020(self):
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=user1&password=123')#exist username & password
+		answer = req.json()
+		req = requests.get('http://localhost:8000/v1/isAuthAlive?authid={0}'.format(answer['authid']))
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1020)
