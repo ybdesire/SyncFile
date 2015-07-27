@@ -7,11 +7,12 @@ class fileManage:
 		path:		relative path. such as 'user1\\ooo'
 	'''
 	def __init__(self, basedir=''):
-		self.base_dir =  '{0}\\userdata\\'.format(os.getcwd())
+		self.base_dir =  '{0}\\userdata\\'.format(r'C:\temp\SyncFile\src\api\SyncFileAPI\v1')
 	
 	'''create folder at relative path, the uplevel folder should exist'''
 	def create_folder(self, path):
 		try:
+			print('Create folder at: {0}{1}'.format(self.base_dir, path))
 			os.mkdir('{0}{1}'.format(self.base_dir, path))
 			return True,''
 		except Exception as e:

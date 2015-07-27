@@ -27,6 +27,6 @@ class FileSys(models.Model):
 	size = models.CharField(max_length=20)
 	createdate = models.DateTimeField(blank=True)
 	creator = models.CharField(max_length=200)
-	filename = models.CharField(max_length=200)
-	foldername = models.CharField(max_length=200)
+	filename = models.CharField(max_length=200, blank=True)
+	foldername = models.CharField(max_length=200, blank=True)
 	path = models.CharField(max_length=2000, blank=True)
