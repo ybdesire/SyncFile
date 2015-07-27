@@ -11,12 +11,12 @@ class TestAPIv1(unittest.TestCase):
 		self.assertEqual(answer['error_code'], 1000)
 
 	def test_API_UserRegister_1001(self):
-		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=user&password=password&email=user@email.com')
+		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=testuser1&password=password&email=user@email.com')
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1001)
 
 	def test_API_UserRegister_1002(self):
-		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=userx&password=password&email=user@email.com')
+		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=userx&password=password&email=testuser1@email.com')
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1002)
 
@@ -31,7 +31,7 @@ class TestAPIv1(unittest.TestCase):
 		self.assertEqual(answer['error_code'], 1011)
 	
 	def test_API_getAuthID_1010(self):
-		req = requests.get('http://localhost:8000/v1/getAuthID?username=user1&password=123')#exist username & password
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1010)
 	
@@ -41,7 +41,7 @@ class TestAPIv1(unittest.TestCase):
 		self.assertEqual(answer['error_code'], 1021)
 
 	def test_API_isAuthAlive_1020(self):
-		req = requests.get('http://localhost:8000/v1/getAuthID?username=user1&password=123')#exist username & password
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
 		answer = req.json()
 		req = requests.get('http://localhost:8000/v1/isAuthAlive?authid={0}'.format(answer['authid']))
 		answer = req.json()
