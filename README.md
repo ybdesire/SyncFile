@@ -17,7 +17,6 @@ Completed API
 ## <i class="icon-pencil"></i> Auth
 
 ###**userRegister**
-http://localhost:8000/v1/userRegister?username=user&password=password&email=user@email.com
 | error_code| register_status| msg   |
 | :------- | :---- | :------- |
 | 1000    | ok   |  registered a new user.   |
