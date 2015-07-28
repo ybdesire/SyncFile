@@ -10,4 +10,8 @@ v1 API
 
 
 v2 API
-2. RestAPI interface.
+1. RestAPI interface.
+2. Support more user type: admin/user/...
+3. copy/move/send file/folder.
+4. folder API(op=mkdir) support different path format, such as 'opt\tmp', 'opt/tmp', 'opt/tmp/'. (v1 only support 'opt\tmp')
+5. Web pages for api configuration/test.
