@@ -17,9 +17,9 @@ Completed API
 ## <i class="icon-pencil"></i> Auth
 
 ###**userRegister**
-####API
+#####API
 aasdf
-####Response
+######Response
 | error_code| register_status| msg   |
 | :------- | :---- | :------- |
 | 1000    | ok   |  registered a new user.   |
