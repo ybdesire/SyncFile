@@ -17,9 +17,9 @@ Completed API
 ## <i class="icon-pencil"></i> Auth
 
 ###**userRegister**
-- API
+######API
 http://localhost:8000/v1/userRegister?username=user&password=password&email=user@email.com
-- Response
+######Response
 | error_code| register_status| msg   |
 | :------- | :---- | :------- |
 | 1000    | ok   |  registered a new user.   |
@@ -29,18 +29,18 @@ http://localhost:8000/v1/userRegister?username=user&password=password&email=user
 | 1004    | error   |  username cannot contain the following characters: \/:*?"<>|   |
 
 ###**getAuthID**
-- API
+######API
 http://localhost:8000/v1/getAuthID?fmt=json&username=user1&password=password
-- Response
+######Response
 | error_code| authid | msg   |
 | :------- | :---- | :------- |
 | 1010     | 'xoxo'|  auth id get ok   |
 | 1011     | ' '   |  auth failure. user is not registed or user name/password incorrect   |
 
 ###**isAuthAlive**
-- API
+######API
 http://localhost:8000/v1/isAuthAlive?authid=xxxooo
-- Response
+######Response
 | error_code| auth_time | msg   |
 | :------- | :----------| :------- |
 | 1020     |  auth time UTC  |  valid authid, and auth still alive   |
