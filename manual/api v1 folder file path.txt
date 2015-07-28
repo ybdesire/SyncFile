@@ -1,0 +1,23 @@
+DIR path
+	Folder/file path combined by BASE_DIR + USER_DIR + RELATIVE_DIR
+
+	BASE_DIR: is the physical path at server. BASE_DIR can/should be configed at file_manage.py.
+	USER_DIR: is user specific dir at server. user_dir is username at v1 api.
+	RELATIVE_DIR: is the dir can be see directly by user.
+
+	i.e. if user1 create 'book\code', the real path is 'BASE_DIR\user1\book\code'
+
+
+DIR in request:
+	Dir format should be windows style. And please ignore the ended '\' for requested path.
+	e.g. create folder api
+	http://127.0.0.1:8000/v1/folder?op=mkdir&&authid=xxxx&path=book\code
+	path format: 'book\code', not 'book\code\'
+
+
+DIR in DB:
+	path format at DB ended with '\'
+	e.g.
+	user1\
+	user1\book\
+	user1\book\code\
