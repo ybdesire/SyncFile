@@ -46,4 +46,13 @@ http://localhost:8000/v1/isAuthAlive?authid=xxxooo
 | 1020     |  auth time UTC  | success  |  valid authid, and auth still alive   |
 | 1021     |  ' '            |  error |   invalid authid   |
 
-
+###**folder?op=mkdir**
+######API
+http://localhost:8000/v1/folder?op=mkdir&authid=xxxooo&path=book
+######Response
+| error_code | status   | msg  |
+| :------- | :------- | :------- |
+| 1100     |   success  |  folder created successfully   |
+| 1101     |   error |   folder already exist   |
+| 1102     |   error |  folder path should not ended with \    |
+| 1103     |   error |  folder path error. the parent folde should be created firstly. and use \    |
