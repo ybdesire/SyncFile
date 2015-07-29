@@ -1,0 +1,15 @@
+API
+
+http://127.0.0.1:8000/v1/folder?op=mkdir&&authid=xxxx&path=xxxx
+http://127.0.0.1:8000/v1/folder?op=mkdir&&authid=xxxx&id=xxxx&name=xxx
+
+
+
+1. logic
+
+if authid passed, then
+(1)if path ok, then create dir, and init db folder item.
+(2)else return exception msg.
+else
+return auth failed msg.
+{'auth_time':'', 'error_code':1021, 'msg':'invalid authid'}

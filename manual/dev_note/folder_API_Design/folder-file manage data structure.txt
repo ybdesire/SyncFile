@@ -8,4 +8,5 @@ createdate:
 creator:
 filename:
 foldername:
+path:
 }

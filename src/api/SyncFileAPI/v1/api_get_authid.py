@@ -7,14 +7,15 @@ from django.contrib.auth.hashers import make_password, check_password, is_passwo
 from .models import UserInfo
 from .models import UserAuthID
 
-def createJsonResponseForGetAuthID(authid, error_code, msg):
+def create_json_response(authid, error_code, msg, status):
 	json_response = {}
 	json_response['authid'] = authid
 	json_response['error_code'] = error_code
 	json_response['msg'] = msg
+	json_response['status'] = status
 	return json_response
 
-def API_GetAuthID(request):
+def api_getAuthID(request):
 	req_user_name = request.GET.get('username', '')
 	req_password = request.GET.get('password', '')
 	
@@ -26,14 +27,14 @@ def API_GetAuthID(request):
 				guid = str(uuid.uuid1())
 				ua = UserAuthID(userName=req_user_name, authID=guid, authTime=datetime.datetime.utcnow())
 				ua.save()
-				response_data = createJsonResponseForGetAuthID(guid, 1010, 'auth success')
+				response_data = create_json_response(guid, 1010, 'auth success', 'success')
 			elif(UserAuthID.objects.filter(userName = req_user_name)[0].authID):#if authID exceed 20h, update authTime & authID. else return the exists authID
 				past_time = UserAuthID.objects.filter(userName = req_user_name)[0].authTime
 				current_time = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
 				delta_seconds = (current_time-past_time).total_seconds()
 				if( delta_seconds>0 and delta_seconds<20*60*60):#authID not exceed 20h, return the exist authID
 					guid = UserAuthID.objects.filter(userName = req_user_name)[0].authID
-					response_data = createJsonResponseForGetAuthID(guid, 1010, 'auth success')
+					response_data = create_json_response(guid, 1010, 'auth success', 'success')
 				else:
 					guid = str(uuid.uuid1())
 					current_time = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
@@ -41,9 +42,9 @@ def API_GetAuthID(request):
 					ua.authID = guid
 					ua.authTime = current_time
 					ua.save()
-					response_data = createJsonResponseForGetAuthID(guid, 1010, 'auth success')
+					response_data = create_json_response(guid, 1010, 'auth success', 'error')
 		else:
-			response_data = createJsonResponseForGetAuthID('', 1011, 'auth failure. user is not registed or user name/password incorrect')
+			response_data = create_json_response('', 1011, 'auth failure. user is not registed or user name/password incorrect', 'error')
 	else:
-		response_data = createJsonResponseForGetAuthID('', 1011, 'auth failure. user is not registed or user name/password incorrect')
+		response_data = create_json_response('', 1011, 'auth failure. user is not registed or user name/password incorrect', 'error')
 	return response_data
