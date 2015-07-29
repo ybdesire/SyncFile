@@ -46,3 +46,35 @@ class TestAPIv1(unittest.TestCase):
 		req = requests.get('http://localhost:8000/v1/isAuthAlive?authid={0}'.format(answer['authid']))
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1020)
+	
+	def test_api_folder_mkdir_1100(self):
+		#make sure user testuser1 registered(in DB). And dir testuser1 existed
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		req = requests.get('http://localhost:8000/v1/folder?op=mkdir&authid={0}&path=book'.format(answer['authid']))
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1100)
+		
+	def test_api_folder_mkdir_1101(self):
+		#make sure user testuser1 registered(in DB). And dir testuser1 existed
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		req = requests.get('http://localhost:8000/v1/folder?op=mkdir&authid={0}&path=book'.format(answer['authid']))
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1101)
+		
+	def test_api_folder_mkdir_1102(self):
+		#make sure user testuser1 registered(in DB). And dir testuser1 existed
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		req = requests.get('http://localhost:8000/v1/folder?op=mkdir&authid={0}&path=book\lol\ooo\lol\ooo'.format(answer['authid']))
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1102)
+		
+	def test_api_folder_mkdir_1103(self):
+		#make sure user testuser1 registered(in DB). And dir testuser1 existed
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		req = requests.get('http://localhost:8000/v1/folder?op=mkdir&authid={0}&path=book\lol\\'.format(answer['authid']))
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1103)
