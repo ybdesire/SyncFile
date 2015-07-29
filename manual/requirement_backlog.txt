@@ -7,6 +7,7 @@ v1 API
 4. How to debug Django project?
 5. Test automation script shoud be in progress with development.[C]
   *in progress
+6. Integration with MySQL & Apache(or other web server).
 
 
 v2 API

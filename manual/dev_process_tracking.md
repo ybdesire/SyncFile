@@ -1,6 +1,0 @@
-## API
-
-### 1. login process
-* http & https(completed. Use http for v1.)
-* register(completed)
-* oAuth(http://localhost:8000/v1/getAuthID?fmt=json&username=email@address&password=password)
