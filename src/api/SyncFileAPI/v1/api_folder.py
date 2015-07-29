@@ -20,13 +20,13 @@ def mkdir(req_path, req_username):
 	mgr = file_manage.fileManage()
 	
 	if(mgr.is_exists(folder_path)):
-		response_data = create_json_response_for_folder_api(1101, 'folder already exist', 'Failure')
+		response_data = create_json_response_for_folder_api(1101, 'folder already exist', 'error')
 	elif(folder_path.split('\\')[len(folder_path.split('\\'))-1] == ''):
-		response_data = create_json_response_for_folder_api(1103, 'folder path should not ended with \\', 'Failure')
+		response_data = create_json_response_for_folder_api(1103, 'folder path should not ended with \\', 'error')
 	else:
 		stat = mgr.create_folder(folder_path)
 		if(stat[0]):
-			response_data = create_json_response_for_folder_api(1100, 'folder created successfully', 'Success')
+			response_data = create_json_response_for_folder_api(1100, 'folder created successfully', 'success')
 			parent_folder_path = os.path.dirname(folder_path)+ '\\'	#DB path should be ended with '\\', such as 'asdf\\xxx\\'
 			parent_folder_id = FileSys.objects.filter(path=parent_folder_path)[0].id 
 			
@@ -41,10 +41,10 @@ def mkdir(req_path, req_username):
 			folder_item = FileSys(id=folder_guid, parentid=folder_parentid, type=folder_type, size=folder_size, createdate=folder_current_date, creator=folder_creator, foldername=folder_foldername, path=folder_path+'\\')
 			folder_item.save()
 		else:
-			response_data = create_json_response_for_folder_api(1102, 'folder path error. the parent folde should be created firstly. and use \\', 'Failure')
+			response_data = create_json_response_for_folder_api(1102, 'folder path error. the parent folde should be created firstly. and use \\', 'error')
 	return response_data
 
-def API_folder(request):
+def api_folder(request):
 	'''authid should be validated before this function'''
 	req_op = request.GET.get('op', '')
 	req_path = request.GET.get('path', '').strip()

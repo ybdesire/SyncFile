@@ -8,20 +8,20 @@ from django.contrib.auth.hashers import make_password, check_password, is_passwo
 from .models import UserInfo, FileSys
 from . import file_manage
 
-def isStrEmpty(str):
+def is_str_empty(str):
 	if str and str.strip():# if string empty or blank
 		return False
 	else:
 		return True
 
-def createJsonResponseForUserRegister(register_status, error_code, msg):#error code = 100x
+def create_json_response(register_status, error_code, msg):#error code = 100x
 	json_response = {}
-	json_response['register_status']=register_status		
+	json_response['status']=register_status		
 	json_response['error_code']=error_code
 	json_response['msg']=msg
 	return json_response
 
-def createRootFolderForNewUser(user_name):
+def create_root_folder_for_new_user(user_name):
 	mgr = file_manage.fileManage()
 	mgr.create_folder(user_name)
 	
@@ -37,7 +37,7 @@ def createRootFolderForNewUser(user_name):
 	folder_item = FileSys(id=folder_guid, parentid=folder_parentid, type=folder_type, size=folder_size, createdate=folder_current_date, creator=folder_creator, foldername=folder_foldername, path=folder_path)
 	folder_item.save()
 	
-def API_UserRegister(request):
+def api_userRegister(request):
 	req_user_name = request.GET.get('username', '')
 	req_password = request.GET.get('password', '')
 	req_email = request.GET.get('email', '')
@@ -47,20 +47,20 @@ def API_UserRegister(request):
 	special_characters = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
 	for spch in special_characters:
 		if spch in req_user_name:
-			response_data = createJsonResponseForUserRegister('error', 1004, 'username cannot contain the following characters: \/:*?"<>|')
+			response_data = create_json_response('error', 1004, 'username cannot contain the following characters: \/:*?"<>|')
 			return response_data
 	
-	if not (isStrEmpty(req_user_name) or isStrEmpty(req_password) or isStrEmpty(req_email)):
+	if not (is_str_empty(req_user_name) or is_str_empty(req_password) or is_str_empty(req_email)):
 		if not ( UserInfo.objects.filter(userName = req_user_name) or UserInfo.objects.filter(email=req_email)):		
-			response_data = createJsonResponseForUserRegister('ok', 1000, 'registered a new user.')
+			response_data = create_json_response('success', 1000, 'registered a new user.')
 			q = UserInfo(userName=req_user_name, password=make_password(req_password), email=req_email)
 			q.save()
-			createRootFolderForNewUser(req_user_name)
+			create_root_folder_for_new_user(req_user_name)
 		elif UserInfo.objects.filter(userName = req_user_name):
-			response_data = createJsonResponseForUserRegister('error', 1001, 'the user has been registered, please change the user name.')
+			response_data = create_json_response('error', 1001, 'the user has been registered, please change the user name.')
 		elif UserInfo.objects.filter(email=req_email):
-			response_data = createJsonResponseForUserRegister('error', 1002, 'the email has been registered, please change the email.')
+			response_data = create_json_response('error', 1002, 'the email has been registered, please change the email.')
 	else:
-		response_data = createJsonResponseForUserRegister('error', 1003, 'blank username/password/email')
+		response_data = create_json_response('error', 1003, 'blank username/password/email')
 	
 	return response_data

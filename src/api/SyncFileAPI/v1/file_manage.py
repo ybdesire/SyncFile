@@ -41,13 +41,10 @@ class fileManage:
 		full_path = '{0}{1}'.format(self.base_dir, path)
 		return os.path.exists(full_path)
 	
-def main():
+def test():
 	mgr = fileManage()
 	stat = mgr.delete_folder(r'user1\kkk')
 	if stat[0]:
 		print('success')
 	else:
 		print(stat[1])
-
-if __name__=='__main__':
-	main()
