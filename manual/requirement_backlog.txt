@@ -8,6 +8,7 @@ v1 API
 5. Test automation script shoud be in progress with development.[C]
   *in progress
 6. Integration with MySQL & Apache(or other web server).
+7. Optimization by cache & cookie.
 
 
 v2 API
