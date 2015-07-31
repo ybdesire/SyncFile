@@ -6,13 +6,23 @@ import pytz#http://stackoverflow.com/questions/2331592/datetime-datetime-utcnow-
 from . import file_manage
 from .models import UserAuthID, FileSys
 
-def create_json_response_for_folder_api(error_code, msg, status):
+def create_json_response_for_folder_api_mkdir(error_code, msg, status):
 	json_response = {}
 	json_response['error_code'] = error_code
 	json_response['msg'] = msg
 	json_response['status'] = status
 	return json_response
 
+def create_json_response_for_folder_api_getdetail(error_code, msg, status, folder_details):
+	json_response = json.loads('{}')
+	json_response['error_code'] = error_code
+	json_response['msg'] = msg
+	json_response['status'] = status
+	json_response['details'] = folder_details
+	
+	return json_response
+
+	
 def mkdir(req_path, req_username):
 	'''req_path should be formated like 'asdf\\xxx', not 'asdf\\xxx\\'
 	'''
@@ -20,14 +30,14 @@ def mkdir(req_path, req_username):
 	mgr = file_manage.fileManage()
 	
 	if(mgr.is_exists(folder_path)):
-		response_data = create_json_response_for_folder_api(1101, 'folder already exist', 'error')
+		response_data = create_json_response_for_folder_api_mkdir(1101, 'folder already exist', 'error')
 	elif(folder_path.split('\\')[len(folder_path.split('\\'))-1] == ''):
-		response_data = create_json_response_for_folder_api(1103, 'folder path should not ended with \\', 'error')
+		response_data = create_json_response_for_folder_api_mkdir(1103, 'folder path should not ended with \\', 'error')
 	else:
 		stat = mgr.create_folder(folder_path)
 		if(stat[0]):
-			response_data = create_json_response_for_folder_api(1100, 'folder created successfully', 'success')
-			parent_folder_path = os.path.dirname(folder_path)+ '\\'	#DB path should be ended with '\\', such as 'asdf\\xxx\\'
+			response_data = create_json_response_for_folder_api_mkdir(1100, 'folder created successfully', 'success')
+			parent_folder_path = os.path.dirname(folder_path) + '\\'	#DB path should be ended with '\\', such as 'asdf\\xxx\\'
 			parent_folder_id = FileSys.objects.filter(path=parent_folder_path)[0].id 
 			
 			folder_guid = str(uuid.uuid1()).replace('-', 'x')
@@ -41,9 +51,35 @@ def mkdir(req_path, req_username):
 			folder_item = FileSys(id=folder_guid, parentid=folder_parentid, type=folder_type, size=folder_size, createdate=folder_current_date, creator=folder_creator, foldername=folder_foldername, path=folder_path+'\\')
 			folder_item.save()
 		else:
-			response_data = create_json_response_for_folder_api(1102, 'folder path error. the parent folde should be created firstly. and use \\', 'error')
+			response_data = create_json_response_for_folder_api_mkdir(1102, 'folder path error. the parent folde should be created firstly. and use \\', 'error')
 	return response_data
 
+def get_folder_detail(req_path, req_username):
+	if(req_path != 'root'):
+		folder_path = '{0}\\{1}\\'.format(req_username, req_path)
+		parent_folder_path = os.path.dirname('{0}\\{1}'.format(req_username, req_path)) + '\\'
+	else:
+		folder_path = '{0}\\'.format(req_username, req_path)
+		parent_folder_path = folder_path
+		
+	if(FileSys.objects.filter(path=folder_path) and FileSys.objects.filter(path=parent_folder_path)):
+		folder_details = json.loads('{}')
+		folder_details['id'] = FileSys.objects.filter(path=folder_path)[0].id
+		folder_details['parentid'] = FileSys.objects.filter(path=folder_path)[0].parentid
+		folder_details['type'] = FileSys.objects.filter(path=folder_path)[0].type
+		folder_details['size'] = FileSys.objects.filter(path=folder_path)[0].size
+		folder_details['createdate'] = FileSys.objects.filter(path=folder_path)[0].createdate.strftime("%Y-%m-%d %H:%M:%S") + ' UTC'
+		folder_details['creator'] = FileSys.objects.filter(path=folder_path)[0].creator
+		folder_details['filename'] = FileSys.objects.filter(path=folder_path)[0].filename
+		folder_details['foldername'] = FileSys.objects.filter(path=folder_path)[0].foldername
+		folder_details['path'] = FileSys.objects.filter(path=folder_path)[0].path
+		
+		response_data = create_json_response_for_folder_api_getdetail(1120, 'folder details info', 'success', folder_details)
+	else:
+		response_data = create_json_response_for_folder_api_getdetail(1121, 'foler not exist. please check path format & content', 'error', '')
+		
+	return response_data
+	
 def api_folder(request):
 	'''authid should be validated before this function'''
 	req_op = request.GET.get('op', '')
@@ -53,5 +89,7 @@ def api_folder(request):
 	response_data = ''
 	if(req_op=='mkdir'):
 		response_data = mkdir(req_path, req_username)
+	if(req_op=='getdetail'):
+		response_data = get_folder_detail(req_path, req_username)
 	
 	return response_data

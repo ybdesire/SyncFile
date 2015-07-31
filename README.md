@@ -56,3 +56,12 @@ http://localhost:8000/v1/folder?op=mkdir&authid=xxxooo&path=book
 | 1101     |   error |   folder already exist   |
 | 1102     |   error |  folder path should not ended with \    |
 | 1103     |   error |  folder path error. the parent folde should be created firstly. and use \    |
+
+###**folder?op=getdetail**
+######API
+http://localhost:8000/v1/folder?op=getdetail&authid=xxx&path=testdir
+######Response
+| error_code | status   | msg  |  details |
+| :------- | :------- | :------- | :------- |
+| 1120     |   success  |  folder details info  | id, parentid, type, size, createdate, creator, filename, foldername, path |
+| 1121     |   error |   foler not exist. please check path format & content   | '' |
