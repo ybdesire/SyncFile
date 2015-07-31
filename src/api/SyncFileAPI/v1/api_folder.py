@@ -13,11 +13,12 @@ def create_json_response_for_folder_api_mkdir(error_code, msg, status):
 	json_response['status'] = status
 	return json_response
 
-def create_json_response_for_folder_api_getdetail(error_code, msg, status):
-	json_response = {}
+def create_json_response_for_folder_api_getdetail(error_code, msg, status, folder_details):
+	json_response = json.loads('{}')
 	json_response['error_code'] = error_code
 	json_response['msg'] = msg
 	json_response['status'] = status
+	json_response['details'] = folder_details
 	
 	return json_response
 
@@ -56,12 +57,28 @@ def mkdir(req_path, req_username):
 def get_folder_detail(req_path, req_username):
 	if(req_path != 'root'):
 		folder_path = '{0}\\{1}\\'.format(req_username, req_path)
-		parent_folder_path = os.path.dirname('{0}\\{1}'.format(req_username, req_path))
+		parent_folder_path = os.path.dirname('{0}\\{1}'.format(req_username, req_path)) + '\\'
 	else:
 		folder_path = '{0}\\'.format(req_username, req_path)
-		parent_folder_path(folder_path)
-
-	return FileSys.objects.filter(path=folder_path)[0].id
+		parent_folder_path = folder_path
+		
+	if(FileSys.objects.filter(path=folder_path) and FileSys.objects.filter(path=parent_folder_path)):
+		folder_details = json.loads('{}')
+		folder_details['id'] = FileSys.objects.filter(path=folder_path)[0].id
+		folder_details['parentid'] = FileSys.objects.filter(path=folder_path)[0].parentid
+		folder_details['type'] = FileSys.objects.filter(path=folder_path)[0].type
+		folder_details['size'] = FileSys.objects.filter(path=folder_path)[0].size
+		folder_details['createdate'] = FileSys.objects.filter(path=folder_path)[0].createdate.strftime("%Y-%m-%d %H:%M:%S") + ' UTC'
+		folder_details['creator'] = FileSys.objects.filter(path=folder_path)[0].creator
+		folder_details['filename'] = FileSys.objects.filter(path=folder_path)[0].filename
+		folder_details['foldername'] = FileSys.objects.filter(path=folder_path)[0].foldername
+		folder_details['path'] = FileSys.objects.filter(path=folder_path)[0].path
+		
+		response_data = create_json_response_for_folder_api_getdetail(1120, 'folder details info', 'success', folder_details)
+	else:
+		response_data = create_json_response_for_folder_api_getdetail(1121, 'foler not exist. please check path format & content', 'error', '')
+		
+	return response_data
 	
 def api_folder(request):
 	'''authid should be validated before this function'''
