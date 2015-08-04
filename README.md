@@ -65,3 +65,13 @@ http://localhost:8000/v1/folder?op=getdetail&authid=xxx&path=testdir
 | :------- | :------- | :------- | :------- |
 | 1120     |   success  |  folder details info  | id, parentid, type, size, createdate, creator, filename, foldername, path |
 | 1121     |   error |   foler not exist. please check path format & content   | '' |
+
+
+###**folder?op=rename**
+######API
+http://localhost:8000/v1/folder?op=rename&authid=xxx&path=xxx&name=xxx
+######Response
+| error_code | status   | msg  |
+| :------- | :------- | :------- |
+| 1130     |   success  |  renamed folder {0} to {1}   |
+| 1131     |   error    |  requested folder not exist   |

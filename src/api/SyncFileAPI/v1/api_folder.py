@@ -92,7 +92,7 @@ def rename_folder(req_username, src_path, dst_name):
 				file_obj.save()
 		mgr = file_manage.fileManage()
 		mgr.rename_folder(folder_path, dst_name)
-		response_data = create_basic_json_response(1130, 'lol', 'success')
+		response_data = create_basic_json_response(1130, 'renamed folder {0} to {1}'.format(os.path.basename(src_path), dst_name), 'success')
 	else:
 		response_data = create_basic_json_response(1131, 'requested folder not exist', 'error')
 	return response_data
