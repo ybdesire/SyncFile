@@ -4,28 +4,27 @@ import requests
 import json
 
 # Create your tests here.
-class TestAPI_userRegister(unittest.TestCase):
-	def test_api_userRegister_1000(self):
+class TestAPIV1(unittest.TestCase):
+	def test001_api_userRegister_1000(self):
 		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=testuser2&password=123&email=testuser2@email.com')
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1000)
 
-	def test_api_userRegister_1001(self):
+	def test002_api_userRegister_1001(self):
 		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=testuser1&password=password&email=user@email.com')
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1001)
 		
-	def test_api_userRegister_1002(self):
+	def test003_api_userRegister_1002(self):
 		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=userx&password=password&email=testuser1@email.com')
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1002)
 
-	def test_api_userRegister_1003(self):
+	def test004_api_userRegister_1003(self):
 		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username= &password=password&email=user@email.com')
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1003)
 		
-class TestAPI_getAuthID(unittest.TestCase):		
 	def test005_api_getAuthID_1011(self):
 		req = requests.get('http://localhost:8000/v1/getAuthID?username=xxxx&password=password')#unknown username or password
 		answer = req.json()
@@ -36,7 +35,6 @@ class TestAPI_getAuthID(unittest.TestCase):
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1010)
 		
-class TestAPI_isAuthAlive(unittest.TestCase):			
 	def test007_api_isAuthAlive_1021(self):
 		req = requests.get('http://localhost:8000/v1/isAuthAlive?authid=xxxxx')#non-exist authid
 		answer = req.json()
@@ -49,7 +47,6 @@ class TestAPI_isAuthAlive(unittest.TestCase):
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1020)
 
-class TestAPI_folder(unittest.TestCase):			
 	def test009_api_folder_mkdir_1100(self):
 		#make sure user testuser1 registered(in DB). And dir testuser1 existed
 		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
