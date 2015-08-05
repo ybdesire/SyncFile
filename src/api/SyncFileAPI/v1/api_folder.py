@@ -30,8 +30,6 @@ def mkdir(req_path, req_username):
 	
 	if(mgr.is_exists(folder_path)):
 		response_data = create_basic_json_response(1101, 'folder already exist', 'error')
-	elif(folder_path.split('\\')[len(folder_path.split('\\'))-1] == ''):
-		response_data = create_basic_json_response(1103, 'folder path should not ended with \\', 'error')
 	else:
 		stat = mgr.create_folder(folder_path)
 		if(stat[0]):
@@ -82,10 +80,11 @@ def get_folder_detail(req_path, req_username):
 def rename_folder(req_username, src_path, dst_name):
 	folder_path_db = '{0}\\{1}\\'.format(req_username, src_path)
 	folder_path = '{0}\\{1}'.format(req_username, src_path)
-	if(folder_path.split('\\')[len(folder_path.split('\\'))-1] == ''):
-		response_data = create_basic_json_response(1103, 'folder path should not ended with \\', 'error')
-	elif(FileSys.objects.filter(path=folder_path_db)):
-		dst_path = '{0}\\{1}\\{2}\\'.format(req_username, os.path.dirname(src_path), dst_name)
+	if(FileSys.objects.filter(path=folder_path_db)):
+		if(os.path.dirname(src_path)!=''):
+			dst_path = '{0}\\{1}\\{2}\\'.format(req_username, os.path.dirname(src_path), dst_name)
+		else:
+			dst_path = '{0}\\{1}\\'.format(req_username, dst_name)
 		for file_obj in FileSys.objects.all():
 			if(file_obj.path.find(folder_path_db)==0):
 				file_obj.path = file_obj.path.replace(folder_path_db, dst_path)
@@ -96,6 +95,36 @@ def rename_folder(req_username, src_path, dst_name):
 	else:
 		response_data = create_basic_json_response(1131, 'requested folder not exist', 'error')
 	return response_data
+
+def remove_folder(req_username, req_path):
+	folder_path_db = '{0}\\{1}\\'.format(req_username, req_path)
+	folder_path = '{0}\\{1}'.format(req_username, req_path)
+	if(FileSys.objects.filter(path=folder_path_db)):
+		for file_obj in FileSys.objects.all():
+			if(file_obj.path.find(folder_path_db)==0):
+				file_obj.delete()
+		mgr = file_manage.fileManage()
+		status = mgr.delete_folder(folder_path)
+		response_data = create_basic_json_response(1140, 'folder removed', 'success')
+	else:
+		response_data = create_basic_json_response(1141, 'requested folder not exist. or path format error(use /)', 'error')
+	return response_data
+
+def list_folder(req_username, req_path):
+	if(req_path=='root'):
+		folder_path_db = '{0}\\'.format(req_username)
+	else:
+		folder_path_db = '{0}\\{1}\\'.format(req_username, req_path)
+		
+	if(FileSys.objects.filter(path=folder_path_db)):
+		folder_list = []
+		for file_obj in FileSys.objects.all():
+			if(file_obj.path.find(folder_path_db)==0 and file_obj.path!=folder_path_db):
+				folder_list.append( '\\'.join(file_obj.path.split('\\')[1:]) )
+		response_data = create_json_response_for_folder_api_getdetail(1150, 'get folder list', 'success', folder_list)
+	else:
+		response_data = create_basic_json_response(1151, 'requested folder not exist. or path format error(use /)', 'error')
+	return response_data
 	
 def api_folder(request):
 	'''authid should be validated before this function'''
@@ -105,11 +134,21 @@ def api_folder(request):
 	req_folder_dst_name = request.GET.get('name', '')
 	req_username = UserAuthID.objects.filter(authID = req_auth_id)[0].userName
 	response_data = ''
+	
+	#path format validation
+	if(req_path.split('\\')[len(req_path.split('\\'))-1] == ''):
+		response_data = create_basic_json_response(1103, 'folder path should not ended with \\', 'error')
+		return response_data
+	
 	if(req_op=='mkdir'):
 		response_data = mkdir(req_path, req_username)
-	if(req_op=='getdetail'):
+	elif(req_op=='getdetail'):
 		response_data = get_folder_detail(req_path, req_username)
-	if(req_op=='rename'):
+	elif(req_op=='rename'):
 		response_data = rename_folder(req_username, req_path, req_folder_dst_name)
+	elif(req_op=='rm'):
+		response_data = remove_folder(req_username, req_path)
+	elif(req_op=='list'):
+		response_data = list_folder(req_username, req_path)
 	
 	return response_data
