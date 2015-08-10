@@ -75,3 +75,13 @@ http://localhost:8000/v1/folder?op=rename&authid=xxx&path=xxx&name=xxx
 | :------- | :------- | :------- |
 | 1130     |   success  |  renamed folder {0} to {1}   |
 | 1131     |   error    |  requested folder not exist   |
+
+
+###**folder?op=list**
+######API
+http://localhost:8000/v1/folder?op=list&authid=xxx&path=xxx
+######Response
+| error_code | status   | msg  |
+| :------- | :------- | :------- |
+| 1150     |   success  |  get folder list   |
+| 1151     |   error    |  requested folder not exist. or path format error(use /)   |
