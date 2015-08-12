@@ -9,6 +9,7 @@ from . import api_user_register
 from . import api_get_authid
 from . import api_is_auth_alive
 from . import api_folder, api_file
+
 # Create your views here.
 
 
@@ -37,7 +38,7 @@ def folder(request):
 
 def file(request):
 	if(request.method=='POST'):
-		response_data = 'post'
+		response_data = "yes"
 	else:
 		req_auth_id = request.GET.get('authid', '')
 		if( api_is_auth_alive.is_valid_authid(req_auth_id) ):
