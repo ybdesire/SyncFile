@@ -9,6 +9,7 @@ from . import api_user_register
 from . import api_get_authid
 from . import api_is_auth_alive
 from . import api_folder, api_file
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -36,6 +37,7 @@ def folder(request):
 		response_data = api_is_auth_alive.create_json_response('', 1021, 'invalid authid', 'error')
 	return HttpResponse(json.dumps(response_data), content_type='application/json')
 
+@csrf_exempt# tell the view not check csrf token for POST request
 def file(request):
 	if(request.method=='POST'):
 		response_data = "yes"
