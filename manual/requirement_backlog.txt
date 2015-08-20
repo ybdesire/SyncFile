@@ -9,6 +9,15 @@ v1 API
   *in progress
 6. Integration with MySQL & Apache(or other web server).
 7. Optimization by cache & cookie.
+8. Web security concern:
+ XSS安全防护
+ 表单自动验证
+ 强制数据类型转换
+ 输入数据过滤
+ 表单令牌验证
+ 防SQL注入
+ 图像上传检测
+
 
 
 v2 API
