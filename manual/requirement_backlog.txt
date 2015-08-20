@@ -17,6 +17,9 @@ v1 API
  表单令牌验证
  防SQL注入
  图像上传检测
+ authentication mechanisms
+ limit the number of requests per second/minute/hour
+ making your API available over HTTPS
 
 
 
