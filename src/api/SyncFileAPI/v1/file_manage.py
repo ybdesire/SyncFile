@@ -40,11 +40,29 @@ class fileManage:
 	def is_exists(self, path):
 		full_path = '{0}{1}'.format(self.base_dir, path)
 		return os.path.exists(full_path)
-	
+		
+	def create_file(self, filepath, filedata):
+		try:
+			full_file_path = '{0}{1}'.format(self.base_dir, filepath)
+			if os.path.exists(full_file_path):
+				return False, 'file already exists'
+			else:
+				file = open(full_file_path, 'w+')
+				file.write(filedata)
+				file.close()
+				print(full_file_path)
+				return True, ''
+		except Exception as e:
+			return False, e		
+			
 def test():
 	mgr = fileManage()
-	stat = mgr.delete_folder(r'user1\kkk')
+	#stat = mgr.delete_folder(r'user1\kkk')
+	stat = mgr.create_file('book\\code\\1.txt', '123456')
 	if stat[0]:
 		print('success')
 	else:
 		print(stat[1])
+		
+if __name__=='__main__':
+	test()
