@@ -16,19 +16,21 @@ def upload_file(request):
 	
 	mgr = file_manage.fileManage()
 	
-	#print(request.body)
 	content_type_httpheader = request.META.get('CONTENT_TYPE')#get http header parameter from client
-	#print(content_type_httpheader)
-	if(content_type_httpheader != 'text/plain'):#post request from html form element
-		#print(content_type_httpheader)
-		content_type_type = content_type_httpheader.split(';')[0]
-		content_type_boundary = content_type_httpheader.split('=')[1]
-		#file_data = request.body.split('\r\n\r\n')[1]
-		#print(file_data)
-		#print('content_type_type: {0}'.format(content_type_type))
-		#print('content_type_boundary: {0}'.format(content_type_boundary))
+	content_type = content_type_httpheader.split(';')[0]
+	
+	if(content_type != 'text/plain'):#post request from html form element
+		post_data_split_len = len(request.body.decode('utf-8').split('\r\n'))
+		boundary_begin = request.body.decode('utf-8').split('\r\n')[0]
+		boundary_end = request.body.decode('utf-8').split('\r\n')[post_data_split_len-2]
+		file_data = ''.join(request.body.decode('utf-8').split('\r\n')[4:post_data_split_len-2])
+		#print('post_data_split_len:{0}'.format(post_data_split_len))
+		#print('boundary_begin:{0}'.format(boundary_begin))
+		#print('boundary_end:{0}'.format(boundary_end))
+		#print('file_data:{0}'.format(file_data))
 		response_data = 'post from form'
-		#stat = mgr.create_file(file_path, )
+		#stat = mgr.create_file(file_path, file_data)
+		#print(stat)
 	else:#if the post request from pure post, the request.body is file content
 		response_data = 'post from pure post'
 	return response_data
@@ -37,8 +39,6 @@ def api_file(request):
 	'''authid should be validated before this function'''
 	response_data = 'file op'
 	req_op = request.GET.get('op', '')
-	req_file_path = request.GET.get('filepath', '')
-	print(req_file_path)
 	if(request.method == 'POST'):
 		if(req_op == 'upload'):
 			response_data = upload_file(request)
