@@ -7,7 +7,7 @@ class fileManage:
 		path:		relative path. such as 'user1\\ooo'
 	'''
 	def __init__(self, basedir=''):
-		self.base_dir =  '{0}\\userdata\\'.format(r'C:\temp\SyncFile\src\api\SyncFileAPI\v1')
+		self.base_dir =  '{0}\\userdata\\'.format(r'C:\Mine\personal\prog\SyncFile\src\api\SyncFileAPI\v1')
 	
 	'''create folder at relative path, the uplevel folder should exist'''
 	def create_folder(self, path):
@@ -47,7 +47,7 @@ class fileManage:
 			if os.path.exists(full_file_path):
 				return False, 'file already exists'
 			else:
-				file = open(full_file_path, 'w+')
+				file = open(full_file_path, 'wb+')#write bytes to file
 				file.write(filedata)
 				file.close()
 				print(full_file_path)
@@ -58,7 +58,7 @@ class fileManage:
 def test():
 	mgr = fileManage()
 	#stat = mgr.delete_folder(r'user1\kkk')
-	stat = mgr.create_file('book\\code\\1.txt', '123456')
+	stat = mgr.create_file('testuser1\\book\\code\\1.txt', b'123456'[2:])
 	if stat[0]:
 		print('success')
 	else:

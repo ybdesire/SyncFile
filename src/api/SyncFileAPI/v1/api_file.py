@@ -20,17 +20,29 @@ def upload_file(request):
 	content_type = content_type_httpheader.split(';')[0]
 	
 	if(content_type != 'text/plain'):#post request from html form element
-		post_data_split_len = len(request.body.decode('utf-8').split('\r\n'))
-		boundary_begin = request.body.decode('utf-8').split('\r\n')[0]
-		boundary_end = request.body.decode('utf-8').split('\r\n')[post_data_split_len-2]
-		file_data = ''.join(request.body.decode('utf-8').split('\r\n')[4:post_data_split_len-2])
+		blist = []
+		count_begin = 0
+		count_end = 0
+		#seperate request.body and get file data
+		for b in request.body:
+			if(request.body[count_end]==b'\n'[0] and count_end>0 and request.body[count_end-1]==b'\r'[0]):
+				blist.append(request.body[count_begin:count_end-1])
+				count_begin = count_end + 1
+			count_end = count_end + 1
+		post_data_split_len = len(blist)
+		boundary_begin = blist[0]
+		boundary_end = blist[post_data_split_len-1]
+		file_data = b''
+		for bl in blist[4:post_data_split_len-1]:
+			file_data = file_data + bl
+		#print('file data len: {0}'.format(len(file_data)))
 		#print('post_data_split_len:{0}'.format(post_data_split_len))
 		#print('boundary_begin:{0}'.format(boundary_begin))
 		#print('boundary_end:{0}'.format(boundary_end))
 		#print('file_data:{0}'.format(file_data))
 		response_data = 'post from form'
-		#stat = mgr.create_file(file_path, file_data)
-		#print(stat)
+		stat = mgr.create_file(file_path, file_data)
+		print(stat)
 	else:#if the post request from pure post, the request.body is file content
 		response_data = 'post from pure post'
 	return response_data
