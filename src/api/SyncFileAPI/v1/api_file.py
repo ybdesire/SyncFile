@@ -1,3 +1,7 @@
+import uuid
+import os
+import datetime
+import pytz#http://stackoverflow.com/questions/2331592/datetime-datetime-utcnow-why-no-tzinfo
 from . import file_manage
 from .models import UserAuthID, FileSys
 
@@ -15,48 +19,84 @@ def upload_file(request):
 	file_path = '{0}\\{1}'.format(req_username, req_file_path)
 	
 	mgr = file_manage.fileManage()
-	
-	content_type_httpheader = request.META.get('CONTENT_TYPE')#get http header parameter from client
-	content_type = content_type_httpheader.split(';')[0]
-	
-	if(content_type != 'text/plain'):#post request from html form element
-		blist = []
-		count_begin = 0
-		count_end = 0
-		#seperate request.body and get file data
-		for b in request.body:
-			if(request.body[count_end]==b'\n'[0] and count_end>0 and request.body[count_end-1]==b'\r'[0]):
-				blist.append(request.body[count_begin:count_end-1])
-				count_begin = count_end + 1
-			count_end = count_end + 1
-		post_data_split_len = len(blist)
-		boundary_begin = blist[0]
-		boundary_end = blist[post_data_split_len-1]
-		file_data = b''
-		count_begin = 0
-		count_end = 0
-		countb = 0
-		countrn = 0
-		for b in request.body:
-			if(request.body[countb]==b'\n'[0] and countb>0 and request.body[countb-1]==b'\r'[0]):
-				countrn = countrn+1
-			if(countrn==4 and count_begin==0):
-				count_begin = countb+1
-			elif(countrn==post_data_split_len-1 and count_end==0):
-				count_end = countb-1
-			countb = countb + 1
+	if(mgr.is_exists(file_path)):
+		response_data = create_basic_json_response(1202, 'file already exist', 'error')
+	else:
+		content_type_httpheader = request.META.get('CONTENT_TYPE')#get http header parameter from client
+		content_type = content_type_httpheader.split(';')[0]
+		
+		if(content_type != 'text/plain'):#post request from html form element
+			blist = []
+			count_begin = 0
+			count_end = 0
+			#seperate request.body and get file data
+			for b in request.body:
+				if(request.body[count_end]==b'\n'[0] and count_end>0 and request.body[count_end-1]==b'\r'[0]):
+					blist.append(request.body[count_begin:count_end-1])
+					count_begin = count_end + 1
+				count_end = count_end + 1
+			post_data_split_len = len(blist)
+			boundary_begin = blist[0]
+			boundary_end = blist[post_data_split_len-1]
+			file_data = b''
+			count_begin = 0
+			count_end = 0
+			countb = 0
+			countrn = 0
+			for b in request.body:
+				if(request.body[countb]==b'\n'[0] and countb>0 and request.body[countb-1]==b'\r'[0]):
+					countrn = countrn+1
+				if(countrn==4 and count_begin==0):
+					count_begin = countb+1
+				elif(countrn==post_data_split_len-1 and count_end==0):
+					count_end = countb-1
+				countb = countb + 1
 
-		file_data = request.body[count_begin:count_end]
-		#print('file data len: {0}'.format(len(file_data)))
-		#print('post_data_split_len:{0}'.format(post_data_split_len))
-		#print('boundary_begin:{0}'.format(boundary_begin))
-		#print('boundary_end:{0}'.format(boundary_end))
-		#print('file_data:{0}'.format(file_data))
-		response_data = 'post from form'
-		stat = mgr.create_file(file_path, file_data)
-		print(stat)
-	else:#if the post request from pure post, the request.body is file content
-		response_data = 'post from pure post'
+			file_data = request.body[count_begin:count_end]
+			#print('file data len: {0}'.format(len(file_data)))
+			#print('post_data_split_len:{0}'.format(post_data_split_len))
+			#print('boundary_begin:{0}'.format(boundary_begin))
+			#print('boundary_end:{0}'.format(boundary_end))
+			#print('file_data:{0}'.format(file_data))
+			stat = mgr.create_file(file_path, file_data)
+			if(stat[0]):
+				response_data = create_basic_json_response(1200, 'file uploaded by form successfully', 'success')
+				
+				parent_folder_path = os.path.dirname(file_path) + '\\'	#DB path should be ended with '\\', such as 'asdf\\xxx\\'
+				parent_folder_id = FileSys.objects.filter(path=parent_folder_path)[0].id 
+				
+				file_guid = str(uuid.uuid1()).replace('-', 'x')
+				file_parentid = parent_folder_id
+				file_type = 'file'
+				file_size = str(count_end-count_begin)
+				file_current_date = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+				file_creator = req_username
+				file_name = os.path.basename(file_path)
+				file_item = FileSys(id=file_guid, parentid=file_parentid, type=file_type, size=file_size, createdate=file_current_date, creator=file_creator, filename=file_name, path=file_path)
+				file_item.save()
+			else:
+				response_data = create_basic_json_response(1203, 'Exception:{0}'.format(stat[1]), 'success')
+		else:#if the post request from pure post, the request.body is file content
+			stat = mgr.create_file(file_path, request.body)
+			if(stat[0]):
+				response_data = create_basic_json_response(1210, 'file uploaded by POST successfully', 'success')
+				
+				parent_folder_path = os.path.dirname(file_path) + '\\'	#DB path should be ended with '\\', such as 'asdf\\xxx\\'
+				parent_folder_id = FileSys.objects.filter(path=parent_folder_path)[0].id 
+				print(stat)
+				file_guid = str(uuid.uuid1()).replace('-', 'x')
+				file_parentid = parent_folder_id
+				file_type = 'file'
+				
+				file_size = str(count_end-count_begin)
+				file_current_date = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+				file_creator = req_username
+				file_name = os.path.basename(file_path)
+				
+				#file_item = FileSys(id=file_guid, parentid=file_parentid, type=file_type, size=file_size, createdate=file_current_date, creator=file_creator, filename=file_name, path=file_path)
+				#file_item.save()
+			else:
+				response_data = create_basic_json_response(1204, 'Exception:{0}'.format(stat[1]), 'success')
 	return response_data
 	
 def api_file(request):
