@@ -50,7 +50,6 @@ class fileManage:
 				file = open(full_file_path, 'wb+')#write bytes to file
 				file.write(filedata)
 				file.close()
-				print(full_file_path)
 				return True, ''
 		except Exception as e:
 			return False, e		

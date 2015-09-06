@@ -33,8 +33,20 @@ def upload_file(request):
 		boundary_begin = blist[0]
 		boundary_end = blist[post_data_split_len-1]
 		file_data = b''
-		for bl in blist[4:post_data_split_len-1]:
-			file_data = file_data + bl
+		count_begin = 0
+		count_end = 0
+		countb = 0
+		countrn = 0
+		for b in request.body:
+			if(request.body[countb]==b'\n'[0] and countb>0 and request.body[countb-1]==b'\r'[0]):
+				countrn = countrn+1
+			if(countrn==4 and count_begin==0):
+				count_begin = countb+1
+			elif(countrn==post_data_split_len-1 and count_end==0):
+				count_end = countb-1
+			countb = countb + 1
+
+		file_data = request.body[count_begin:count_end]
 		#print('file data len: {0}'.format(len(file_data)))
 		#print('post_data_split_len:{0}'.format(post_data_split_len))
 		#print('boundary_begin:{0}'.format(boundary_begin))
