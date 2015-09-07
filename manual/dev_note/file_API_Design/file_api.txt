@@ -1,0 +1,17 @@
+ERROR CODE: 12xx
+
+1. upload
+upload files to server side.
+API: 	authid={authid}&op=upload&filepath=dir1/dir2/file.txt
+
+2. download
+
+
+3. list
+
+
+4. rm
+
+5. rename
+
+optional: copy, move

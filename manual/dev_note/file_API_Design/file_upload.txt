@@ -1,0 +1,37 @@
+API
+
+http://localhost:8000/v1/file?authid={authid}&op=upload&filepath=xxx.txt
+
+
+
+1. logic
+
+if authid passed, then
+(1)if file exist at physical directory, then return msg.
+(2)if file exist at DB, then return msg.
+(3)if file is posted from html form, then extract file data and saved as a new file, and update DB item.
+(4)if file is posted from js/python, then save all the data into a new file, and update DB item.
+(5)else return exception msg.
+else
+return auth failed msg.
+{'auth_time':'', 'error_code':1021, 'msg':'invalid authid'}
+
+
+2. usage 
+The file can be posted by html form element, or by python
+(1) by html form
+	SyncFile\src\api\SyncFileAPI\v1\user_scenario_test\form_post_file.html
+'''
+<form id="file_upload_form" action="http://localhost:8000/v1/file?authid={authid}&op=upload&filepath=xxx.txt" enctype="multipart/form-data" method="post">
+	<input type="file" name="xxx">
+	<input type="submit" value="Send">
+</form>
+'''
+
+(2)by python
+	SyncFile\src\api\SyncFileAPI\v1\user_scenario_test\post_file.py
+'''
+with open('p4vinst64.exe', 'rb') as f:
+		url = 'http://localhost:8000/v1/file?authid={0}&op=upload&filepath=p4vinst64.exe'.format(answer['authid'])
+		r = requests.post(url, data=f)
+'''
