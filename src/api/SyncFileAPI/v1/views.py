@@ -44,4 +44,7 @@ def file(request):
 		response_data = api_file.api_file(request)
 	else:
 		response_data = api_is_auth_alive.create_json_response('', 1021, 'invalid authid', 'error')
-	return HttpResponse(json.dumps(response_data), content_type='application/json')
+	if(response_data['error_code']<10000):
+		return HttpResponse(json.dumps(response_data), content_type='application/json')
+	else:
+		return HttpResponse('')

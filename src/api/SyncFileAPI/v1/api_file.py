@@ -101,14 +101,36 @@ def upload_file(request):
 			else:
 				response_data = create_basic_json_response(1204, 'Exception:{0}'.format(stat[1]), 'success')
 	return response_data
+
+def download_file(request):
+	response_data = create_basic_json_response(1220, 'download', 'error')
+	req_auth_id = request.GET.get('authid', '')
+	req_username = UserAuthID.objects.filter(authID = req_auth_id)[0].userName
+	req_file_path = request.GET.get('filepath', '')
+	file_path = '{0}\\{1}'.format(req_username, req_file_path)
+	
+	mgr = file_manage.fileManage()
+	if(mgr.is_exists(file_path) and FileSys.objects.filter(path = file_path)):#file exist at directory and DB
+		response_data = create_basic_json_response(1220, 'file can be downloaded, get this url to start download', 'error')
+	else:
+		response_data = create_basic_json_response(1221, 'file not exists', 'error')
+
+	#response_data = create_basic_json_response(10001, 'do not need response again', 'success')
+	return response_data
+	
 	
 def api_file(request):
 	'''authid should be validated before this function'''
+	response_data = create_basic_json_response(1206, 'Incorrect API format, please check manual', 'error')
 	req_op = request.GET.get('op', '')
+	
 	if(request.method == 'POST'):
 		if(req_op == 'upload'):
 			response_data = upload_file(request)
 		else:
 			response_data = create_basic_json_response(1201, 'not support this op', 'error')
-		
+	else:
+		if(req_op == 'download'):
+			response_data = download_file(request)
+	
 	return response_data
