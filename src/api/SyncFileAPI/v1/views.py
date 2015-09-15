@@ -47,5 +47,6 @@ def file(request):
 	return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 def f(request):
-	print(request.path_info.replace('/v1/f/',''))
+	short_id = request.GET.get('id', '')
+	api_file.download_file(short_id)
 	return HttpResponse('')

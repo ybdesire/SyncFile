@@ -4,7 +4,7 @@ import os
 import datetime
 import pytz#http://stackoverflow.com/questions/2331592/datetime-datetime-utcnow-why-no-tzinfo
 from . import file_manage
-from .models import UserAuthID, FileSys
+from .models import UserAuthID, FileSys, ShortLink
 
 def create_basic_json_response(error_code, msg, status):
 	json_response = json.loads('{}')
@@ -102,7 +102,7 @@ def upload_file(request):
 				response_data = create_basic_json_response(1204, 'Exception:{0}'.format(stat[1]), 'success')
 	return response_data
 
-def download_file(request):
+def download_file_link(request):
 	response_data = create_basic_json_response(1220, 'download', 'error')
 	req_auth_id = request.GET.get('authid', '')
 	req_username = UserAuthID.objects.filter(authID = req_auth_id)[0].userName
@@ -111,14 +111,34 @@ def download_file(request):
 	
 	mgr = file_manage.fileManage()
 	if(mgr.is_exists(file_path) and FileSys.objects.filter(path = file_path)):#file exist at directory and DB
-		response_data = create_basic_json_response(1220, 'file can be downloaded, get this url to start download', 'error')
+		short_id = str(uuid.uuid1())
+		full_url_path = request.build_absolute_uri() 
+		
+		count_while = 0
+		#repeat 5 times if uuid repeated
+		while(ShortLink.objects.filter(id=short_id)):
+			short_id = str(uuid.uuid1())
+			count_while = count_while + 1
+			if(count_while==6):
+				break
+		if(ShortLink.objects.filter(id=short_id)):
+			response_data = create_basic_json_response(1222, 'server busy, repeat again', 'error')
+		else:
+			link_item = ShortLink(id=short_id, link=full_url_path)
+			link_item.save()
+			short_url = '{0}/v1/f?id={1}'.format(request.META['HTTP_HOST'], short_id)
+		
+		response_data = create_basic_json_response(1220, short_url, 'success')
+		
 	else:
 		response_data = create_basic_json_response(1221, 'file not exists', 'error')
 
 	#response_data = create_basic_json_response(10001, 'do not need response again', 'success')
 	return response_data
 	
-	
+def download_file(short_id):
+	print('will post file data')
+	pass
 def api_file(request):
 	'''authid should be validated before this function'''
 	response_data = create_basic_json_response(1206, 'Incorrect API format, please check manual', 'error')
@@ -131,6 +151,6 @@ def api_file(request):
 			response_data = create_basic_json_response(1201, 'not support this op', 'error')
 	else:
 		if(req_op == 'download'):
-			response_data = download_file(request)
+			response_data = download_file_link(request)
 	
 	return response_data
