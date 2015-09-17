@@ -35,7 +35,7 @@ http://localhost:8000/v1/getAuthID?fmt=json&username=user1&password=password
 | error_code| authid | status | msg   |
 | :------- | :---- | :---- |:------- |
 | 1010     | 'xoxo'| success |  auth id get ok   |
-| 1011     | ' '   | error |  auth failure. user is not registed or user name/password incorrect   |
+| 1011     | ' '   | error |  auth failure. user is not registered or user name/password incorrect   |
 
 ###**isAuthAlive**
 ######API
@@ -85,3 +85,34 @@ http://localhost:8000/v1/folder?op=list&authid=xxx&path=xxx
 | :------- | :------- | :------- |
 | 1150     |   success  |  get folder list   |
 | 1151     |   error    |  requested folder not exist. or path format error(use /)   |
+
+
+###**file?op=upload**
+File could be uploaded by pure POST(from python) and form POST(from html).
+######API
+POST http://localhost:8000/v1/file?authid={0}&op=upload&filepath=testpost.txt
+filepath include the file name and file path.
+######Response
+| error_code | status   | msg  |
+| :------- | :------- | :------- |
+| 1200    |   success   |   file uploaded by form successfully  |
+| 1210    |   success   |   file uploaded by POST successfully  |
+| 1201    |   error  |  not support this op(POST only support op=upload)   |
+| 1202    |   error  |  file already exist at server dir   |
+| 1203    |   error  |  file creation exception(pure OST)    |
+| 1204    |   error  |  file creation exception(form POST)   |
+| 1205    |   error  |  file already exist at DB   |
+| 1206    |   error  |  Incorrect API format, please check manual   |
+
+
+###**file?op=download**reque
+File download should be requested 2 times. First request the API below, and get a short link for file download. And send the second request to the short link can download a file.
+######API
+http://localhost:8000/v1/file?authid={0}&op=download&filepath=testformpost.txt
+success return like this: {"error_code": 1220, "msg": "localhost:8000/v1/f?id=b3e75ec0-5cde-11e5-acbc-ea9f05b65156", "status": "success"}
+######Response
+| error_code | status   | msg  |
+| :------- | :------- | :------- |
+| 1220    |   success   |   short link  |
+| 1221    |    error    |   file not exists  |
+| 1222    |    error    |   server busy, repeat again  |

@@ -81,7 +81,7 @@ def upload_file(request):
 				
 				response_data = create_basic_json_response(1200, 'file uploaded by form successfully', 'success')
 			else:
-				response_data = create_basic_json_response(1203, 'Exception:{0}'.format(stat[1]), 'success')
+				response_data = create_basic_json_response(1203, 'Exception:{0}'.format(stat[1]), 'error')
 		else:#if the post request from pure post, the request.body is file content
 			stat = mgr.create_file(file_path, request.body)
 			if(stat[0]):
@@ -104,7 +104,6 @@ def upload_file(request):
 	return response_data
 
 def download_file_link(request):
-	response_data = create_basic_json_response(1220, 'download', 'error')
 	req_auth_id = request.GET.get('authid', '')
 	req_username = UserAuthID.objects.filter(authID = req_auth_id)[0].userName
 	req_file_path = request.GET.get('filepath', '')
@@ -120,11 +119,11 @@ def download_file_link(request):
 		while(ShortLink.objects.filter(id=short_id)):
 			short_id = str(uuid.uuid1())
 			count_while = count_while + 1
-			if(count_while==6):
+			if(count_while>=6):
 				break
 		if(ShortLink.objects.filter(id=short_id)):
 			response_data = create_basic_json_response(1222, 'server busy, repeat again', 'error')
-		else:
+		else:#generate and send out short link for file downloading
 			link_item = ShortLink(id=short_id, link=full_url_path)
 			link_item.save()
 			short_url = 'http://{0}/v1/f?id={1}'.format(request.META['HTTP_HOST'], short_id)
@@ -148,7 +147,7 @@ def get_download_file_data(short_id):
 		file_path = '{0}\\{1}'.format(req_username, req_file_path)
 		mgr = file_manage.fileManage()
 		status, data = mgr.get_file_data(file_path)
-		return os.path.basename(file_path), data
+		return os.path.basename(file_path), data#file name, file data
 	else:
 		print('the short link is invalid')
 	pass

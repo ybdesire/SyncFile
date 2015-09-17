@@ -4,7 +4,7 @@ import requests
 import json
 
 # Create your tests here.
-# Run single test case: manage.py test v1.tests.TestAPIv1.test005_api_getAuthID_101120
+# Run single test case: manage.py test v1.tests.TestAPIV1.test005_api_getAuthID_101120
 class TestAPIV1(unittest.TestCase):
 	def test001_api_userRegister_1000(self):
 		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=testuser2&password=123&email=testuser2@email.com')
@@ -190,4 +190,20 @@ class TestAPIV1(unittest.TestCase):
 		req = requests.post(url, '123456')
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1202)
+
+	def test026_api_file_download_1221(self):#file not exist
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		url = 'http://localhost:8000/v1/file?authid={0}&op=download&filepath=nofile.txt'.format(answer['authid'])
+		req = requests.get(url)
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1221)
+	
+	def test027_api_file_download_1220(self):#can get the download short link correctly
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		url = 'http://localhost:8000/v1/file?authid={0}&op=download&filepath=testformpost.txt'.format(answer['authid'])
+		req = requests.get(url)
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1220)
 		
