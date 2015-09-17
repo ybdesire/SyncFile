@@ -1,6 +1,7 @@
 import uuid
 import json
 import os
+import urllib
 import datetime
 import pytz#http://stackoverflow.com/questions/2331592/datetime-datetime-utcnow-why-no-tzinfo
 from . import file_manage
@@ -126,19 +127,33 @@ def download_file_link(request):
 		else:
 			link_item = ShortLink(id=short_id, link=full_url_path)
 			link_item.save()
-			short_url = '{0}/v1/f?id={1}'.format(request.META['HTTP_HOST'], short_id)
-		
-		response_data = create_basic_json_response(1220, short_url, 'success')
+			short_url = 'http://{0}/v1/f?id={1}'.format(request.META['HTTP_HOST'], short_id)
+			response_data = create_basic_json_response(1220, short_url, 'success')
 		
 	else:
 		response_data = create_basic_json_response(1221, 'file not exists', 'error')
 
-	#response_data = create_basic_json_response(10001, 'do not need response again', 'success')
 	return response_data
 	
-def download_file(short_id):
-	print('will post file data')
+def get_download_file_data(short_id):
+	if(ShortLink.objects.filter(id=short_id)):
+		url = ShortLink.objects.filter(id=short_id)[0].link
+		url_p = urllib.parse.urlparse(url)
+		url_query = {}#split the url query "authid=7be9a910-5cde-11e5-b465-ea9f05b65156&op=download&filepath=testformpost.txt"
+		for item in url_p.query.split('&'):
+			url_query[item.split('=')[0]] = item.split('=')[1]
+		#get file path
+		req_username = UserAuthID.objects.filter(authID = url_query['authid'])[0].userName
+		req_file_path = url_query['filepath']
+		file_path = '{0}\\{1}'.format(req_username, req_file_path)
+		mgr = file_manage.fileManage()
+		status, data = mgr.get_file_data(file_path)
+		return os.path.basename(file_path), data
+	else:
+		print('the short link is invalid')
 	pass
+	
+	
 def api_file(request):
 	'''authid should be validated before this function'''
 	response_data = create_basic_json_response(1206, 'Incorrect API format, please check manual', 'error')

@@ -54,6 +54,16 @@ class fileManage:
 		except Exception as e:
 			return False, e		
 			
+	def get_file_data(self, filepath):
+		try:
+			full_file_path = '{0}{1}'.format(self.base_dir, filepath)
+			if not os.path.exists(full_file_path):
+				return False, 'file not exists'
+			else:
+				file = open(full_file_path, 'rb')#read file as bytes
+				return True, file.read()
+		except Exception as e:
+			return False, e
 def test():
 	mgr = fileManage()
 	#stat = mgr.delete_folder(r'user1\kkk')

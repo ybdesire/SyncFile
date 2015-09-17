@@ -4,6 +4,7 @@ from .models import UserAuthID
 import json
 import datetime
 import pytz
+import urllib
 from django.contrib.auth.hashers import make_password, check_password, is_password_usable
 from . import api_user_register
 from . import api_get_authid
@@ -48,5 +49,9 @@ def file(request):
 
 def f(request):
 	short_id = request.GET.get('id', '')
-	api_file.download_file(short_id)
-	return HttpResponse('')
+	file_name, file_data = api_file.get_download_file_data(short_id)
+	response = HttpResponse(file_data, content_type='text/plain')
+	#support Unicode file name. [IE9,Chrome,FF]
+	response['Content-Disposition'] = 'attachment; filename="{0}";filename*=UTF-8\'\'{1}'.format(urllib.parse.quote_plus(file_name), urllib.parse.quote_plus(file_name))
+
+	return response
