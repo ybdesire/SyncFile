@@ -30,3 +30,7 @@ class FileSys(models.Model):
 	filename = models.CharField(max_length=200, blank=True)
 	foldername = models.CharField(max_length=200, blank=True)
 	path = models.CharField(max_length=2000, blank=True)
+
+class ShortLink(models.Model):
+	id = models.CharField(max_length=50, primary_key=True)
+	link = models.CharField(max_length=2000)

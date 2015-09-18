@@ -1,0 +1,32 @@
+<html>
+
+<head>
+	<title>post file by form</title>
+	<script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.0/jquery.js">
+	</script>
+</head>
+
+<body>
+	<form id="file_upload_form" action="http://localhost:8000/v1/file?authid=8178e4ee-4c84-11e5-b640-ea9f05b65156&op=upload" enctype="multipart/form-data" method="post">
+		<input type="file" name="xxx">
+		<input type="submit" value="Send">
+	</form>
+	<p id="txt">lalal</p>
+</body>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		var authid
+		console.log("here");
+		$.get("http://localhost:8000/v1/getAuthID?username=testuser1&password=123", function(data){
+			authid = data["authid"];
+			$("#txt").html(authid);
+
+			url = "http://localhost:8000/v1/file?authid={authid}&op=upload&filepath=xxx.exe".replace("{authid}", authid);
+			
+			$("#file_upload_form").attr("action", url);
+		});
+	});
+</script>
+
+</html>

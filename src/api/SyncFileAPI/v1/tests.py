@@ -4,6 +4,7 @@ import requests
 import json
 
 # Create your tests here.
+# Run single test case: manage.py test v1.tests.TestAPIV1.test005_api_getAuthID_101120
 class TestAPIV1(unittest.TestCase):
 	def test001_api_userRegister_1000(self):
 		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=testuser2&password=123&email=testuser2@email.com')
@@ -160,3 +161,49 @@ class TestAPIV1(unittest.TestCase):
 		req = requests.get('http://localhost:8000/v1/folder?op=list&authid={0}&path=notexistfolder'.format(answer['authid']))
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1151)
+
+	def test023_api_file_upload_1210(self):
+		#correctly upload a file by pure post
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		url = 'http://localhost:8000/v1/file?authid={0}&op=upload&filepath=testpost.txt'.format(answer['authid'])
+		req = requests.post(url, '123456')
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1210)
+		
+	def test024_api_file_upload_1200(self):
+		#correctly upload a file by form post
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		url = 'http://localhost:8000/v1/file?authid={0}&op=upload&filepath=testformpost.txt'.format(answer['authid'])
+		headers={'Content-Type':'multipart/form-data'}
+		data = b'------WebKitFormBoundaryO3FiuVbj5B5aJbTy\r\nContent-Disposition: form-data; name="xxx"; filename="1.txt"\r\nContent-Type: text/plain\r\n\r\n111\r\n------WebKitFormBoundaryO3FiuVbj5B5aJbTy--\r\n'
+		req = requests.post(url, data, headers=headers)
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1200)
+	
+	def test025_api_file_upload_1202(self):
+		#upload a exists file(existed at directory)
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		url = 'http://localhost:8000/v1/file?authid={0}&op=upload&filepath=testpost.txt'.format(answer['authid'])
+		req = requests.post(url, '123456')
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1202)
+
+	def test026_api_file_download_1221(self):#file not exist
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		url = 'http://localhost:8000/v1/file?authid={0}&op=download&filepath=nofile.txt'.format(answer['authid'])
+		req = requests.get(url)
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1221)
+	
+	def test027_api_file_download_1220(self):#can get the download short link correctly
+		req = requests.get('http://localhost:8000/v1/getAuthID?username=testuser1&password=123')#exist username & password
+		answer = req.json()
+		url = 'http://localhost:8000/v1/file?authid={0}&op=download&filepath=testformpost.txt'.format(answer['authid'])
+		req = requests.get(url)
+		answer = req.json()
+		self.assertEqual(answer['error_code'], 1220)
+		
