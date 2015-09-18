@@ -105,7 +105,7 @@ filepath include the file name and file path.
 | 1206    |   error  |  Incorrect API format, please check manual   |
 
 
-###**file?op=download**reque
+###**file?op=download**
 File download should be requested 2 times. First request the API below, and get a short link for file download. And send the second request to the short link can download a file.
 ######API
 http://localhost:8000/v1/file?authid={0}&op=download&filepath=testformpost.txt
