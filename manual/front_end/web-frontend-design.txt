@@ -1,0 +1,56 @@
+1. Story
+A remote file sharing web.
+
+
+2. Technology Choice
+(1)Framework: AngularJS
+(2)Tech: semantic + Design Pattern + SPA + ES6/HTML5/CSS3/JS + jQuery/Bootstrap/AngularUI + Session/Cookie/Ajax/JSON/ + RestAPI + MiniUI/KendoUI/easyUI + SEO
+(3)Test: unit testing/ visual regression/ performance testing
+(4)Process Management: Grunt
+(5)Dev Process: feature definition->mockup builder->coding
+
+
+3. High-level Tech target
+(1)web performance tuning: JS/CSS uglify.
+(2)responsive: auto-fit pad/phone.
+(3)Learn web-container theory.
+(4)Learn common component implementation: nav-bar, drop-down list, 
+(5)Learn async theory implementation.
+
+
+4. Target Feature
+4.1 Login page
+(1)sign-in & sign-up
+(2)forgot password: CAPTCHA + email
+(3)
+Online reading for txt based files(.txt/.cpp/.py).
+email notification .
+beautiful table & charts.
+Search.
+Image preview & image zoom.
+
+
+5. Future
+(1)cloud storage.
+(2)file sync across all devices.
+(3)video/ppt/doc online container--reading/editing.
+(4)Integration with Baidu map GPS info.
+
+
+6. Backlog request
+(1)md file style view support.
+(2)Drag file for uploading.
+(3)Session time-out notification box.
+
+
+Ref:
+[1] semantic: http://ued.ctrip.com/blog/?p=2735
+[2] 2014 web new tech: http://www.zingdesign.com/top-10-web-development-trends-and-predictions-for-2014/
+[3] 2015 web new tech: http://www.zingdesign.com/top-10-web-development-trends-and-predictions-for-2015/
+[4] http://www.zingdesign.com/top-10-web-design-trends-and-predictions-for-2015/#header-material-design
+[5] Scalable JavaScript Application Architecture, http://www.slideshare.net/nzakas/scalable-javascript-application-architecture
+[6] Enterprise JavaScript Error Handling (Ajax Experience 2008), http://www.slideshare.net/nzakas/enterprise-javascript-error-handling-presentation
+[7] High-Performance JavaScript, http://lanyrd.com/2007/oscon/smdxg/
+[8] Modern JavaScript Applications: Design Patterns, http://www.slideshare.net/VolodymyrVoytyshyn/modern-java-script-applications
+[9] Javascript Best Practices, http://www.slideshare.net/cheilmann/javascript-best-practices-1041724
+[10] 5 Tips for Better JavaScript, http://www.slideshare.net/toddanglin/5-tips-for-better-javascript
