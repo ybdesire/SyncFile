@@ -1,0 +1,4 @@
+1. start server
+>npm start
+2. access UI at browser: http://localhost:8000/app/index.html
+
