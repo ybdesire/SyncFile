@@ -1,0 +1,4 @@
+1. "fatal: unable to connect to github.com:"
+we might get this error when "npm start/install"
+The root cause is our network might be blocked by FileWall. And solution is make git replace http protocol to https:
+$ git config --global url."https://".insteadOf git://
