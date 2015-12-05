@@ -11,7 +11,11 @@ API side:
 
 
 UI side:
-1. install nodejs
-2. install npm
+1. Install nodejs v4 or v5
+2. $ npm update
+3. Install bower for global environment
+    $ npm install -g bower
+
+
 
 
