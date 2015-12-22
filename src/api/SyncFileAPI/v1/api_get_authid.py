@@ -8,7 +8,7 @@ from .models import UserInfo
 from .models import UserAuthID
 
 def create_json_response(authid, error_code, msg, status):
-	json_response = {}
+	json_response = json.loads('{}')
 	json_response['authid'] = authid
 	json_response['error_code'] = error_code
 	json_response['msg'] = msg
@@ -19,7 +19,7 @@ def api_getAuthID(request):
 	req_user_name = request.GET.get('username', '')
 	req_password = request.GET.get('password', '')
 	
-	response_data = {}
+	response_data = json.loads('{}')
 	if(UserInfo.objects.filter(userName = req_user_name)):
 		password_at_db = UserInfo.objects.filter(userName = req_user_name)[0].password#the password at db is encrypted
 		if ( UserInfo.objects.filter(userName = req_user_name) and check_password(req_password, password_at_db) ):

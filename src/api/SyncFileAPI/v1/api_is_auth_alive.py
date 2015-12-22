@@ -5,7 +5,7 @@ import pytz#http://stackoverflow.com/questions/2331592/datetime-datetime-utcnow-
 from .models import UserAuthID
 
 def create_json_response(auth_time, error_code, msg, status):
-	json_response = {}
+	json_response = json.loads('{}')
 	json_response['auth_time'] = auth_time
 	json_response['error_code'] = error_code
 	json_response['msg'] = msg

@@ -15,7 +15,7 @@ def is_str_empty(str):
 		return True
 
 def create_json_response(register_status, error_code, msg):#error code = 100x
-	json_response = {}
+	json_response = json.loads('{}')
 	json_response['status']=register_status		
 	json_response['error_code']=error_code
 	json_response['msg']=msg
@@ -42,7 +42,7 @@ def api_userRegister(request):
 	req_password = request.GET.get('password', '')
 	req_email = request.GET.get('email', '')
 	
-	response_data = {}
+	response_data = json.loads('{}')
 	
 	special_characters = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
 	for spch in special_characters:

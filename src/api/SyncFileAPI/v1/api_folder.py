@@ -7,7 +7,7 @@ from . import file_manage
 from .models import UserAuthID, FileSys
 
 def create_basic_json_response(error_code, msg, status):
-	json_response = {}
+	json_response = json.loads('{}')
 	json_response['error_code'] = error_code
 	json_response['msg'] = msg
 	json_response['status'] = status
