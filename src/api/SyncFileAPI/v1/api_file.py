@@ -18,7 +18,7 @@ def upload_file(request):
 	req_auth_id = request.GET.get('authid', '')
 	req_username = UserAuthID.objects.filter(authID = req_auth_id)[0].userName
 	req_file_path = request.GET.get('filepath', '')
-	file_path = '{0}\\{1}'.format(req_username, req_file_path)
+	file_path = os.path.join(req_username, req_file_path)
 	
 	mgr = file_manage.fileManage()
 	if(mgr.is_exists(file_path)):#file exist at directory
@@ -66,7 +66,7 @@ def upload_file(request):
 			stat = mgr.create_file(file_path, file_data)
 			if(stat[0]):
 				#create file correctly, then save the file info into DB
-				parent_folder_path = os.path.dirname(file_path) + '\\'	#DB path should be ended with '\\', such as 'asdf\\xxx\\'
+				parent_folder_path = os.path.dirname(file_path)
 				parent_folder_id = FileSys.objects.filter(path=parent_folder_path)[0].id 
 				
 				file_guid = str(uuid.uuid1()).replace('-', 'x')
@@ -85,7 +85,7 @@ def upload_file(request):
 		else:#if the post request from pure post, the request.body is file content
 			stat = mgr.create_file(file_path, request.body)
 			if(stat[0]):
-				parent_folder_path = os.path.dirname(file_path) + '\\'	#DB path should be ended with '\\', such as 'asdf\\xxx\\'
+				parent_folder_path = os.path.dirname(file_path)
 				parent_folder_id = FileSys.objects.filter(path=parent_folder_path)[0].id 
 				
 				file_guid = str(uuid.uuid1()).replace('-', 'x')
@@ -107,7 +107,7 @@ def download_file_link(request):
 	req_auth_id = request.GET.get('authid', '')
 	req_username = UserAuthID.objects.filter(authID = req_auth_id)[0].userName
 	req_file_path = request.GET.get('filepath', '')
-	file_path = '{0}\\{1}'.format(req_username, req_file_path)
+	file_path = os.path.join(req_username, req_file_path)
 	
 	mgr = file_manage.fileManage()
 	if(mgr.is_exists(file_path) and FileSys.objects.filter(path = file_path)):#file exist at directory and DB
@@ -144,7 +144,7 @@ def get_download_file_data(short_id):
 		#get file path
 		req_username = UserAuthID.objects.filter(authID = url_query['authid'])[0].userName
 		req_file_path = url_query['filepath']
-		file_path = '{0}\\{1}'.format(req_username, req_file_path)
+		file_path = os.path.join(req_username, req_file_path)
 		mgr = file_manage.fileManage()
 		status, data = mgr.get_file_data(file_path)
 		return os.path.basename(file_path), data#file name, file data
