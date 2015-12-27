@@ -12,6 +12,30 @@ Currently, the API development is in progress.
 > - Developed by python 3.4.3 and Django 1.8.2.
 > - Please config the 'base_dir' at file_manage.py firstly, which is for user file/folder storage path at server.
 
+# How to set up the project at your local machine?
+
+I guess pip is install at your local machine if not then do:
+
+``` sh
+(For Debian based machine)
+sudo apt-get install python-pip
+```
+
+``` sh
+pip install virtualenv
+virtualenv <folder-name>
+```
+
+Change the directory to folder which you have created
+``` sh
+source bin/activate
+```
+
+Then clone the repositry and move to folder codejudge and follow these steps:
+``` sh
+pip install -r requirements.txt
+```
+
 Completed API
 ------------------
 ## <i class="icon-pencil"></i> Auth

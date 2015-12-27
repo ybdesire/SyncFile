@@ -3,3 +3,10 @@ __pycache__/
 
 # Linux compiled files
 *.pyc
+
+#Virtual Enviroment
+bin
+lib
+include
+local
+pip-selfcheck.json
