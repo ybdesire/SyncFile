@@ -7,7 +7,7 @@ import json
 # Run single test case: manage.py test v1.tests.TestAPIV1.test005_api_getAuthID_101120
 class TestAPIV1(unittest.TestCase):
 	def test001_api_userRegister_1000(self):
-		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=testuser2&password=123&email=testuser2@email.com')
+		req = requests.get('http://localhost:8000/v1/userRegister?op=register&fmt=json&username=testuser3&password=123&email=testuser3@email.com')
 		answer = req.json()
 		self.assertEqual(answer['error_code'], 1000)
 
