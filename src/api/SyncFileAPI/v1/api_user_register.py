@@ -32,7 +32,7 @@ def create_root_folder_for_new_user(user_name):
 	folder_current_date = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
 	folder_creator = user_name
 	folder_foldername = user_name
-	folder_path = user_name+'\\'
+	folder_path = user_name
 	
 	folder_item = FileSys(id=folder_guid, parentid=folder_parentid, type=folder_type, size=folder_size, createdate=folder_current_date, creator=folder_creator, foldername=folder_foldername, path=folder_path)
 	folder_item.save()

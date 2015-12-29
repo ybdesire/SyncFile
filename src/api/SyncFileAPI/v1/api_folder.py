@@ -25,7 +25,7 @@ def create_json_response_for_folder_api_getdetail(error_code, msg, status, folde
 def mkdir(req_path, req_username):
 	'''req_path should be formated like 'asdf\\xxx', not 'asdf\\xxx\\'
 	'''
-	folder_path = '{0}\\{1}'.format(req_username, req_path)
+	folder_path = os.path.join(req_username, req_path)
 	mgr = file_manage.fileManage()
 	
 	if(mgr.is_exists(folder_path)):
@@ -34,7 +34,7 @@ def mkdir(req_path, req_username):
 		stat = mgr.create_folder(folder_path)
 		if(stat[0]):
 			response_data = create_basic_json_response(1100, 'folder created successfully', 'success')
-			parent_folder_path = os.path.dirname(folder_path) + '\\'	#DB path should be ended with '\\', such as 'asdf\\xxx\\'
+			parent_folder_path = os.path.dirname(folder_path)
 			parent_folder_id = FileSys.objects.filter(path=parent_folder_path)[0].id 
 			
 			folder_guid = str(uuid.uuid1()).replace('-', 'x')
@@ -45,7 +45,7 @@ def mkdir(req_path, req_username):
 			folder_creator = req_username
 			folder_foldername = os.path.basename(req_path)
 	
-			folder_item = FileSys(id=folder_guid, parentid=folder_parentid, type=folder_type, size=folder_size, createdate=folder_current_date, creator=folder_creator, foldername=folder_foldername, path=folder_path+'\\')
+			folder_item = FileSys(id=folder_guid, parentid=folder_parentid, type=folder_type, size=folder_size, createdate=folder_current_date, creator=folder_creator, foldername=folder_foldername, path=folder_path)
 			folder_item.save()
 		else:
 			response_data = create_basic_json_response(1102, 'folder path error. the parent folde should be created firstly. and use \\', 'error')
@@ -53,10 +53,10 @@ def mkdir(req_path, req_username):
 
 def get_folder_detail(req_path, req_username):
 	if(req_path != 'root'):
-		folder_path = '{0}\\{1}\\'.format(req_username, req_path)
-		parent_folder_path = os.path.dirname('{0}\\{1}'.format(req_username, req_path)) + '\\'
+		folder_path = os.path.join(req_username, req_path)
+		parent_folder_path = os.path.dirname(folder_path)
 	else:
-		folder_path = '{0}\\'.format(req_username, req_path)
+		folder_path = '{0}'.format(req_username, req_path)
 		parent_folder_path = folder_path
 		
 	if(FileSys.objects.filter(path=folder_path) and FileSys.objects.filter(path=parent_folder_path)):
@@ -78,13 +78,13 @@ def get_folder_detail(req_path, req_username):
 	return response_data
 	
 def rename_folder(req_username, src_path, dst_name):
-	folder_path_db = '{0}\\{1}\\'.format(req_username, src_path)
-	folder_path = '{0}\\{1}'.format(req_username, src_path)
+	folder_path_db = os.path.join(req_username, src_path)
+	folder_path = os.path.join(req_username, src_path)
 	if(FileSys.objects.filter(path=folder_path_db)):
 		if(os.path.dirname(src_path)!=''):
-			dst_path = '{0}\\{1}\\{2}\\'.format(req_username, os.path.dirname(src_path), dst_name)
+			dst_path = os.path.join(req_username, os.path.dirname(src_path), dst_name)
 		else:
-			dst_path = '{0}\\{1}\\'.format(req_username, dst_name)
+			dst_path = os.path.join(req_username, dst_name)
 		for file_obj in FileSys.objects.all():
 			if(file_obj.path.find(folder_path_db)==0):
 				file_obj.path = file_obj.path.replace(folder_path_db, dst_path)
@@ -97,8 +97,8 @@ def rename_folder(req_username, src_path, dst_name):
 	return response_data
 
 def remove_folder(req_username, req_path):
-	folder_path_db = '{0}\\{1}\\'.format(req_username, req_path)
-	folder_path = '{0}\\{1}'.format(req_username, req_path)
+	folder_path_db = os.path.join(req_username, req_path)
+	folder_path = os.path.join(req_username, req_path)
 	if(FileSys.objects.filter(path=folder_path_db)):
 		for file_obj in FileSys.objects.all():
 			if(file_obj.path.find(folder_path_db)==0):
@@ -112,15 +112,15 @@ def remove_folder(req_username, req_path):
 
 def list_folder(req_username, req_path):
 	if(req_path=='root'):
-		folder_path_db = '{0}\\'.format(req_username)
+		folder_path_db = '{0}'.format(req_username)
 	else:
-		folder_path_db = '{0}\\{1}\\'.format(req_username, req_path)
+		folder_path_db = os.path.join(req_username, req_path)
 		
 	if(FileSys.objects.filter(path=folder_path_db)):
 		folder_list = []
 		for file_obj in FileSys.objects.all():
 			if(file_obj.path.find(folder_path_db)==0 and file_obj.path!=folder_path_db):
-				folder_list.append( '\\'.join(file_obj.path.split('\\')[1:]) )
+				folder_list.append( '\\'.join(os.path.split(file_obj.path)[1:]))
 		response_data = create_json_response_for_folder_api_getdetail(1150, 'get folder list', 'success', folder_list)
 	else:
 		response_data = create_basic_json_response(1151, 'requested folder not exist. or path format error(use /)', 'error')
