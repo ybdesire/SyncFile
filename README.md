@@ -10,7 +10,7 @@ Currently, the API development is in progress.
 > **Note:**
 
 > - Developed by python 3.4.3 and Django 1.8.2.
-> - Local storage path 'base_dir' could be modified at file_manage.py at 'curr_path = str(os.path.dirname(os.path.realpath(__file__)))' as __file__.
+> - Local storage path 'base_dir' could be modified at file_manage.py at 'curr_path = str(os.path.dirname(os.path.realpath(\_\_file\_\_)))' as \_\_file\_\_.
 
 Completed API
 ------------------
