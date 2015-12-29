@@ -10,7 +10,7 @@ Currently, the API development is in progress.
 > **Note:**
 
 > - Developed by python 3.4.3 and Django 1.8.2.
-> - Please config the 'base_dir' at file_manage.py firstly, which is for user file/folder storage path at server.
+> - Local storage path 'base_dir' could be modified at file_manage.py at 'curr_path = str(os.path.dirname(os.path.realpath(__file__)))' as __file__.
 
 Completed API
 ------------------
