@@ -12,6 +12,30 @@ Currently, the API development is in progress.
 > - Developed by python 3.4.3 and Django 1.8.2.
 > - Local storage path 'base_dir' could be modified at file_manage.py at 'curr_path = str(os.path.dirname(os.path.realpath(\_\_file\_\_)))' as \_\_file\_\_.
 
+# How to set up the project at your local machine?
+
+I guess pip is install at your local machine if not then do:
+
+``` sh
+(For Debian based machine)
+sudo apt-get install python-pip
+```
+
+``` sh
+pip install virtualenv
+virtualenv <folder-name>
+```
+
+Change the directory to folder which you have created
+``` sh
+source bin/activate
+```
+
+Then clone the repositry and move to folder codejudge and follow these steps:
+``` sh
+pip install -r requirements.txt
+```
+
 Completed API
 ------------------
 ## <i class="icon-pencil"></i> Auth
