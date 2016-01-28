@@ -2,19 +2,44 @@ SyncFile
 ===================
 
 
-SyncFile is developed for file sync across all platforms.
-Currently, the main API development is completed.
+SyncFile is developed for file sync across all platforms. The aim is any device can be a file server or client.
+
+* Your file can be synced to public/private cloud (distributed file storage).
+* Your file can be synced to embeded smart device (private local storage), such as smart router.
+* Files can be synced between different clients.
+
+To achieve this goal, we keep architecture support cross platform.
+
+* RESTful API server is Django.
+* WebApp is SPA by Angular.
+
+We build things from almost init. And all published APIs passed automation test.
 
 ----------
+
+# Architecture
+
+![alt tag](https://github.com/ybdesire/SyncFile/tree/master/manual/SyncFile_Arch.png)
+
+* Client: WebApp, iOS/Android App, Win/Linux/Mac client, CMD tool, plug-in
+* Storage: Distributed storage + local storage
+* API Server: RESTful 
+
+Currently, the main API development is completed.
+
+
+
+----------
+
+# Build
+
+Please refer to (SyncFile\manual\dev_env_setup.md) for more details.
 
 > **Note:**
 
 > - Developed by python 3.4.3 and Django 1.8.2.
 > - Local storage path 'base_dir' could be modified at file_manage.py at 'curr_path = str(os.path.dirname(os.path.realpath(\_\_file\_\_)))' as \_\_file\_\_.
 
-# How to set up the project at your local machine?
-
-Please refer to (SyncFile\manual\dev_env_setup.md) for more details.
 
 Completed API
 ------------------
