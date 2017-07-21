@@ -19,8 +19,7 @@ We build things from almost init. And all published APIs passed automation test.
 
 # Architecture
 
-![alt tag](https://github.com/ybdesire/SyncFile/tree/master/manual/SyncFile_Arch.png)
-
+![alt tag](manual/SyncFile_Arch.png)
 * Client: WebApp, iOS/Android App, Win/Linux/Mac client, CMD tool, plug-in
 * Storage: Distributed storage + local storage
 * API Server: RESTful 
@@ -45,13 +44,13 @@ Completed API
 ------------------
 ## <i class="icon-pencil"></i> Auth
 
-###**userRegister**
+### **userRegister**
 
-######API
+###### API
 
 http://localhost:8000/v1/userRegister?username=user&password=password&email=user@email.com
 
-######Response
+###### Response
 
 | error_code| status| msg   |
 | :------- | :---- | :------- |
@@ -61,39 +60,39 @@ http://localhost:8000/v1/userRegister?username=user&password=password&email=user
 | 1003    | error   |  blank username/password/email   |
 | 1004    | error   |  username cannot contain the following characters: \/:*?"<>|   |
 
-###**getAuthID**
+### **getAuthID**
 
-######API
+###### API
 
 http://localhost:8000/v1/getAuthID?fmt=json&username=user1&password=password
 
-######Response
+###### Response
 
 | error_code| authid | status | msg   |
 | :------- | :---- | :---- |:------- |
 | 1010     | 'xoxo'| success |  auth id get ok   |
 | 1011     | ' '   | error |  auth failure. user is not registered or user name/password incorrect   |
 
-###**isAuthAlive**
+### **isAuthAlive**
 
-######API
+###### API
 
 http://localhost:8000/v1/isAuthAlive?authid=xxxooo
 
-######Response
+###### Response
 
 | error_code| auth_time | status   | msg  |
 | :------- | :----------| :------- | :------- |
 | 1020     |  auth time UTC  | success  |  valid authid, and auth still alive   |
 | 1021     |  ' '            |  error |   invalid authid   |
 
-###**folder?op=mkdir**
+### **folder?op=mkdir**
 
-######API
+###### API
 
 http://localhost:8000/v1/folder?op=mkdir&authid=xxxooo&path=book
 
-######Response
+###### Response
 
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
@@ -102,13 +101,13 @@ http://localhost:8000/v1/folder?op=mkdir&authid=xxxooo&path=book
 | 1102     |   error |  folder path should not ended with \    |
 | 1103     |   error |  folder path error. the parent folde should be created firstly. and use \    |
 
-###**folder?op=getdetail**
+### **folder?op=getdetail**
 
-######API
+###### API
 
 http://localhost:8000/v1/folder?op=getdetail&authid=xxx&path=testdir
 
-######Response
+###### Response
 
 | error_code | status   | msg  |  details |
 | :------- | :------- | :------- | :------- |
@@ -116,13 +115,13 @@ http://localhost:8000/v1/folder?op=getdetail&authid=xxx&path=testdir
 | 1121     |   error |   foler not exist. please check path format & content   | '' |
 
 
-###**folder?op=rename**
+### **folder?op=rename**
 
-######API
+###### API
 
 http://localhost:8000/v1/folder?op=rename&authid=xxx&path=xxx&name=xxx
 
-######Response
+###### Response
 
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
@@ -130,13 +129,13 @@ http://localhost:8000/v1/folder?op=rename&authid=xxx&path=xxx&name=xxx
 | 1131     |   error    |  requested folder not exist   |
 
 
-###**folder?op=list**
+### **folder?op=list**
 
-######API
+###### API
 
 http://localhost:8000/v1/folder?op=list&authid=xxx&path=xxx
 
-######Response
+###### Response
 
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
@@ -144,16 +143,16 @@ http://localhost:8000/v1/folder?op=list&authid=xxx&path=xxx
 | 1151     |   error    |  requested folder not exist. or path format error(use /)   |
 
 
-###**file?op=upload**
+### **file?op=upload**
 
 File could be uploaded by pure POST(from python) and form POST(from html).
 
-######API
+###### API
 
 POST http://localhost:8000/v1/file?authid={0}&op=upload&filepath=testpost.txt
 filepath include the file name and file path.
 
-######Response
+###### Response
 
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
@@ -167,16 +166,16 @@ filepath include the file name and file path.
 | 1206    |   error  |  Incorrect API format, please check manual   |
 
 
-###**file?op=download**
+### **file?op=download**
 
 File download should be requested 2 times. First request the API below, and get a short link for file download. And send the second request to the short link can download a file.
 
-######API
+###### API
 
 http://localhost:8000/v1/file?authid={0}&op=download&filepath=testformpost.txt
 success return like this: {"error_code": 1220, "msg": "localhost:8000/v1/f?id=b3e75ec0-5cde-11e5-acbc-ea9f05b65156", "status": "success"}
 
-######Response
+###### Response
 
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
