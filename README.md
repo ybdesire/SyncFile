@@ -46,9 +46,13 @@ Completed API
 ## <i class="icon-pencil"></i> Auth
 
 ###**userRegister**
+
 ######API
+
 http://localhost:8000/v1/userRegister?username=user&password=password&email=user@email.com
+
 ######Response
+
 | error_code| status| msg   |
 | :------- | :---- | :------- |
 | 1000    | success   |  registered a new user.   |
@@ -58,27 +62,39 @@ http://localhost:8000/v1/userRegister?username=user&password=password&email=user
 | 1004    | error   |  username cannot contain the following characters: \/:*?"<>|   |
 
 ###**getAuthID**
+
 ######API
+
 http://localhost:8000/v1/getAuthID?fmt=json&username=user1&password=password
+
 ######Response
+
 | error_code| authid | status | msg   |
 | :------- | :---- | :---- |:------- |
 | 1010     | 'xoxo'| success |  auth id get ok   |
 | 1011     | ' '   | error |  auth failure. user is not registered or user name/password incorrect   |
 
 ###**isAuthAlive**
+
 ######API
+
 http://localhost:8000/v1/isAuthAlive?authid=xxxooo
+
 ######Response
+
 | error_code| auth_time | status   | msg  |
 | :------- | :----------| :------- | :------- |
 | 1020     |  auth time UTC  | success  |  valid authid, and auth still alive   |
 | 1021     |  ' '            |  error |   invalid authid   |
 
 ###**folder?op=mkdir**
+
 ######API
+
 http://localhost:8000/v1/folder?op=mkdir&authid=xxxooo&path=book
+
 ######Response
+
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
 | 1100     |   success  |  folder created successfully   |
@@ -87,9 +103,13 @@ http://localhost:8000/v1/folder?op=mkdir&authid=xxxooo&path=book
 | 1103     |   error |  folder path error. the parent folde should be created firstly. and use \    |
 
 ###**folder?op=getdetail**
+
 ######API
+
 http://localhost:8000/v1/folder?op=getdetail&authid=xxx&path=testdir
+
 ######Response
+
 | error_code | status   | msg  |  details |
 | :------- | :------- | :------- | :------- |
 | 1120     |   success  |  folder details info  | id, parentid, type, size, createdate, creator, filename, foldername, path |
@@ -97,9 +117,13 @@ http://localhost:8000/v1/folder?op=getdetail&authid=xxx&path=testdir
 
 
 ###**folder?op=rename**
+
 ######API
+
 http://localhost:8000/v1/folder?op=rename&authid=xxx&path=xxx&name=xxx
+
 ######Response
+
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
 | 1130     |   success  |  renamed folder {0} to {1}   |
@@ -107,9 +131,13 @@ http://localhost:8000/v1/folder?op=rename&authid=xxx&path=xxx&name=xxx
 
 
 ###**folder?op=list**
+
 ######API
+
 http://localhost:8000/v1/folder?op=list&authid=xxx&path=xxx
+
 ######Response
+
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
 | 1150     |   success  |  get folder list   |
@@ -117,11 +145,16 @@ http://localhost:8000/v1/folder?op=list&authid=xxx&path=xxx
 
 
 ###**file?op=upload**
+
 File could be uploaded by pure POST(from python) and form POST(from html).
+
 ######API
+
 POST http://localhost:8000/v1/file?authid={0}&op=upload&filepath=testpost.txt
 filepath include the file name and file path.
+
 ######Response
+
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
 | 1200    |   success   |   file uploaded by form successfully  |
@@ -135,11 +168,16 @@ filepath include the file name and file path.
 
 
 ###**file?op=download**
+
 File download should be requested 2 times. First request the API below, and get a short link for file download. And send the second request to the short link can download a file.
+
 ######API
+
 http://localhost:8000/v1/file?authid={0}&op=download&filepath=testformpost.txt
 success return like this: {"error_code": 1220, "msg": "localhost:8000/v1/f?id=b3e75ec0-5cde-11e5-acbc-ea9f05b65156", "status": "success"}
+
 ######Response
+
 | error_code | status   | msg  |
 | :------- | :------- | :------- |
 | 1220    |   success   |   short link  |
